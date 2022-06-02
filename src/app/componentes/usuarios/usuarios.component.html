@@ -1,0 +1,62 @@
+<div class="col-md-4 order-md-2 mb-4">
+    Especialista
+    <ul class="list-group mb-3">
+        <li class="list-group-item d-flex justify-content-between lh-condensed" *ngFor="let especialista of listaEspecialistas" (click)="elegirUsuario(especialista)">
+            <div>
+                <h6 class="my-0">{{especialista.data.especialista.nombre}} {{especialista.data.especialista.apellido}}</h6>
+                <p class="my-0">{{especialista.data.especialista.edad}} {{especialista.data.especialista.dni}} {{especialista.data.especialista.mail}}</p>
+                <strong *ngIf="especialista.data.especialista.verificado">VERIFICADO!</strong>
+                <!--<img [src]="pais.bandera" height="50px" width="50px">-->
+            </div>
+        </li>
+    </ul>
+    Paciente
+    <ul class="list-group mb-3">
+        <li class="list-group-item d-flex justify-content-between lh-condensed" *ngFor="let paciente of listaPacientes">
+            <div>
+                <h6 class="my-0">{{paciente.data.paciente.nombre}} {{paciente.data.paciente.apellido}}</h6>
+                <p class="my-0">{{paciente.data.paciente.edad}} {{paciente.data.paciente.dni}} {{paciente.data.paciente.mail}}</p>
+            </div>
+        </li>
+    </ul>
+</div>
+<form class="text-center border border-light p-5"  action="#" id="RegistroPacienteForm" [formGroup]="registroPacienteForm">
+
+    <div class="row g-5">
+        <p class="h4 mb-4">Registro Paciente</p>
+
+        <div class="col-md-7 col-lg-8">
+            <div class="row g-4">
+            <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="Nombre" formControlName="nombre" 
+            [(ngModel)]="admin.nombre">
+            
+            <input type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Apellido" formControlName="apellido"
+            [(ngModel)]="admin.apellido">
+            
+            <input type="number" id="edad" class="form-control" placeholder="Edad"
+            aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="edad"
+            [(ngModel)]="admin.edad">
+
+            <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail" formControlName="email"
+            [(ngModel)]="admin.email">
+
+            <input type="password" id="contrasñea" class="form-control" placeholder="Contraseña"
+                aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="contrasena"
+                [(ngModel)]="admin.contrasena">
+
+
+            <input type="number" id="dni" class="form-control" placeholder="DNI"
+                aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="dni"
+                [(ngModel)]="admin.dni">
+
+            <label for="foto" >Foto</label> <br />
+            <input type="file" accept=".png, .jpg, .jpeg" (change)="subirFoto($event)" required formControlName="fotoUno" class="form-control" name="fotoUno" id="fotoUno" /> <br />
+            <div *ngIf="FotoUnoGet && FotoUnoGet.invalid && FotoUnoGet.touched" class="warningForm">
+                la foto es obligatoria
+            </div>
+            <hr>
+            <button color="info" block="true" class="w-50 btn btn-primary btn-lg" type="submit" (click)="agregarPaciente()">Registrarse</button>
+           </div>
+        </div>
+    </div>
+</form>
