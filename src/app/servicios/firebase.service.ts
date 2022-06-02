@@ -30,6 +30,9 @@ export class FirebaseService {
   async añadirEpecialistas(especialista:any){
     addDoc(collection(this.db,"especialistas"), {especialista});
   }
+  async AñadirColeccion(data:any,coleccion:string){
+    addDoc(collection(this.db,coleccion), {data});
+  }
   public async getCollection(collectionName:string){
     let data:any[]=[];
     const docSnap = await getDocs(collection(this.db, collectionName));

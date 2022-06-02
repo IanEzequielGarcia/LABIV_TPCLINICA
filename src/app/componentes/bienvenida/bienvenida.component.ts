@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FirebaseService } from 'src/app/servicios/firebase.service';
 
 @Component({
   selector: 'app-bienvenida',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./bienvenida.component.scss']
 })
 export class BienvenidaComponent implements OnInit {
-
-  constructor() { }
+  estaLogueado = this.firestore.isLoggedIn();
+  constructor(public firestore:FirebaseService) {
+    this.EsAdmin();
+   }
 
   ngOnInit(): void {
+  }
+  EsAdmin(){
+    console.log(this.estaLogueado);
   }
 
 }

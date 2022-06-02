@@ -17,7 +17,6 @@ export class RegistroEspecialistaComponent implements OnInit {
     contrasena : new FormControl('',[Validators.required,Validators.minLength(4)]),
     especialidad : new FormControl('',[Validators.required]),
     fotoUno : new FormControl('',[Validators.required]),
-
   });
   especialista={
     nombre:"",
@@ -31,7 +30,12 @@ export class RegistroEspecialistaComponent implements OnInit {
     tipo:"especialista",
     verificado:false
   }
-  constructor(public firestore:FirebaseService) { }
+  inputEspecialista:string="";
+  especialidadesList:any[]=[];
+
+  constructor(public firestore:FirebaseService) {
+    this.getEspecialistas();
+  }
   get FotoUnoGet()
   {
     return this.registroEspecialistaForm.get('fotoUno');
@@ -59,5 +63,22 @@ export class RegistroEspecialistaComponent implements OnInit {
     console.log(this.especialista);
     this.firestore.añadirEpecialistas(this.especialista);
     this.firestore.RegisterUser(this.especialista.email,this.especialista.contrasena);
+  }
+  AgregarEspecialidad(){
+    console.log((<HTMLInputElement> document.getElementById("especialidadInput")).value);
+    this.firestore.AñadirColeccion((<HTMLInputElement> document.getElementById("especialidadInput")).value,"especialidades");
+    this.getEspecialistas();
+  }
+  getEspecialistas(){
+    this.especialidadesList=[];
+    this.firestore.getCollection("especialidades").then((data)=>{
+      data.forEach((dataAux:any)=>{
+      this.especialidadesList.push(dataAux.data.data);
+    })
+    });
+  }
+  SeleccionarEspecialidad(especialidad:string){
+    console.log(especialidad);
+    this.registroEspecialistaForm.controls['especialidad'].setValue(especialidad);
   }
 }

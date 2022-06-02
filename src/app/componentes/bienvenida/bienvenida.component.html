@@ -21,8 +21,8 @@
                     <a class="card-text" href="/juegos/mayor-menor">Jugar</a>
                 <ng-template #elseBlock> <strong #elseBlock>Registrese para jugar.</strong></ng-template>
                 </div>-->
-                <h5 class="card-title">Usuarios</h5>
-                <a class="card-text" routerLink="/usuarios">Login</a>
+                <h5 class="card-title" *ngIf="estaLogueado|async as User">Usuarios</h5>
+                <a class="card-text"  *ngIf="estaLogueado|async as User" routerLink="/usuarios">Login</a>
             </div>
         </div>
         <div class="card">

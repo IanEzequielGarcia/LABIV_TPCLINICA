@@ -19,6 +19,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SpinnerInterceptor } from './shared/spinner.interceptor';
 import { RegistroEspecialistaComponent } from './componentes/registro-especialista/registro-especialista.component';
 import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
+import { NavbarComponent } from './componentes/navbar/navbar.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +28,8 @@ import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
     RegistroComponent,
     SpinnerComponent,
     RegistroEspecialistaComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    NavbarComponent
   ],
   imports: [
     CommonModule,

@@ -19,9 +19,14 @@
                 aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="contrasena" >
             <p class="text-danger" *ngIf="registroEspecialistaForm.get('contrasena')?.errors && registroEspecialistaForm.get('contrasena')?.touched">Contraseña requerido</p>
         
-            <input type="text" id="obraSocial" class="form-control" placeholder="Especialidad"
-                aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="especialidad" >
+            <select formControlName="especialidad" class="form-control">
+                <option *ngFor="let especialidad of especialidadesList" value="{{especialidad}}">{{especialidad}}</option>
+            </select>
             <p class="text-danger" *ngIf="registroEspecialistaForm.get('especialidad')?.errors && registroEspecialistaForm.get('especialidad')?.touched">Especialidad requerido</p>
+            <input placeholder="O agregue una nueva" id="especialidadInput">
+            <button (click)="AgregarEspecialidad()">Agregar Especialidad</button>
+            <!--<input type="text" id="obraSocial" class="form-control" placeholder="Especialidad"
+                aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="especialidad" >-->
         
             <input type="number" id="dni" class="form-control" placeholder="DNI"
                 aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="dni" >
