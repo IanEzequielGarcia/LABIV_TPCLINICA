@@ -5,6 +5,7 @@ import { LoginComponent } from './componentes/login/login.component';
 import { RegistroEspecialistaComponent } from './componentes/registro-especialista/registro-especialista.component';
 import { RegistroComponent } from './componentes/registro/registro.component';
 import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
+import { AdminGuardGuard } from './guards/admin-guard.guard';
 
 const routes: Routes = [
   {
@@ -29,7 +30,7 @@ const routes: Routes = [
   },
   {
     path: 'usuarios',
-    component:UsuariosComponent
+    component:UsuariosComponent//,canActivate:[AdminGuardGuard]
     //loadChildren: () => import('./juegos/ahorcado/ahorcado.component').then(m => m.AhorcadoComponent)
   },
   {

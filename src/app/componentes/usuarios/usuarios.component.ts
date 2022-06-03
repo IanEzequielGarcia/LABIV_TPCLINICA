@@ -10,7 +10,7 @@ import { FirebaseService } from 'src/app/servicios/firebase.service';
 export class UsuariosComponent implements OnInit {
   listaPacientes:any[]=[];
   listaEspecialistas:any[]=[];
-  registroPacienteForm = new FormGroup({
+  adminForm = new FormGroup({
     nombre : new FormControl('',[Validators.required]),
     apellido : new FormControl('',[Validators.required]),
     edad : new FormControl('',[Validators.required]),
@@ -21,7 +21,7 @@ export class UsuariosComponent implements OnInit {
   });
   constructor(public firestore:FirebaseService) {
     this.getUsuarios();
-   }
+  }
   admin={
     nombre:"",
     apellido:"",
@@ -30,16 +30,17 @@ export class UsuariosComponent implements OnInit {
     email:"",
     contrasena:"",
     fotoUno:"",
+    tipo:"admin"
   }
   getUsuarios(){
-    this.firestore.getCollection("especialistas").then((pacientesAux)=>{
-      pacientesAux.forEach((especialista:any)=>{
+    this.firestore.getCollection("especialistas").then((adminsAux)=>{
+      adminsAux.forEach((especialista:any)=>{
       this.listaEspecialistas.push(especialista);
     })
     });
-    this.firestore.getCollection("pacientes").then((pacientesAux)=>{
-      pacientesAux.forEach((pacientes:any)=>{
-      this.listaPacientes.push(pacientes);
+    this.firestore.getCollection("pacientes").then((adminsAux)=>{
+      adminsAux.forEach((admins:any)=>{
+      this.listaPacientes.push(admins);
     })
     })
   }
@@ -64,7 +65,7 @@ export class UsuariosComponent implements OnInit {
   }
   get FotoUnoGet()
   {
-    return this.registroPacienteForm.get('fotoUno');
+    return this.adminForm.get('fotoUno');
   }
   async subirFoto(event:any)
   {
@@ -78,6 +79,11 @@ export class UsuariosComponent implements OnInit {
     });
   }
   agregarPaciente(){
+    this.admin.nombre=this.adminForm.get('nombre')?.value;
+    this.admin.apellido=this.adminForm.get('apellido')?.value;
+    this.admin.edad=this.adminForm.get('edad')?.value;
+    this.admin.dni=this.adminForm.get('dni')?.value;
+    this.admin.email=this.adminForm.get('email')?.value;
     console.log(this.admin);
     this.firestore.añadirAdmin(this.admin);
     this.firestore.RegisterUser(this.admin.email,this.admin.contrasena);

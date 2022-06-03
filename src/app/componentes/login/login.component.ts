@@ -91,4 +91,9 @@ export class LoginComponent implements OnInit {
       })
     })
   }
+  AccesoRapidoCustom(email:string,contraseña:string){
+    this.firestore.SignIn(email,contraseña).then(()=>{
+      alert("Logueado con exito");
+    })
+  }
 }

@@ -5,6 +5,7 @@
             <div>
                 <h6 class="my-0">{{especialista.data.especialista.nombre}} {{especialista.data.especialista.apellido}}</h6>
                 <p class="my-0">{{especialista.data.especialista.edad}} {{especialista.data.especialista.dni}} {{especialista.data.especialista.mail}}</p>
+                <img src="{{especialista.data.especialista.foto}}">
                 <strong *ngIf="especialista.data.especialista.verificado">VERIFICADO!</strong>
                 <!--<img [src]="pais.bandera" height="50px" width="50px">-->
             </div>
@@ -20,43 +21,43 @@
         </li>
     </ul>
 </div>
-<form class="text-center border border-light p-5"  action="#" id="RegistroPacienteForm" [formGroup]="registroPacienteForm">
+<form class="text-center border border-light p-5"  action="#" id="RegistroPacienteForm" [formGroup]="adminForm">
 
-    <div class="row g-5">
-        <p class="h4 mb-4">Registro Paciente</p>
+    <div class="col-md-7 col-lg-8">
+        <div class="row g-4">
+        <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="Nombre" formControlName="nombre" 
+        >
+        <p class="text-danger" *ngIf="adminForm.get('nombre')?.errors && adminForm.get('nombre')?.touched">Nombre requerido</p>
+        <input type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Apellido" formControlName="apellido"
+        >
+        <p class="text-danger" *ngIf="adminForm.get('apellido')?.errors && adminForm.get('apellido')?.touched">Apellido requerido</p>
+        
+        <input type="number" id="edad" class="form-control" placeholder="Edad"
+        aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="edad"
+        >
+        <p class="text-danger" *ngIf="adminForm.get('edad')?.errors && adminForm.get('edad')?.touched">Edad requerida</p>
 
-        <div class="col-md-7 col-lg-8">
-            <div class="row g-4">
-            <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="Nombre" formControlName="nombre" 
-            [(ngModel)]="admin.nombre">
-            
-            <input type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Apellido" formControlName="apellido"
-            [(ngModel)]="admin.apellido">
-            
-            <input type="number" id="edad" class="form-control" placeholder="Edad"
-            aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="edad"
-            [(ngModel)]="admin.edad">
+        <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail" formControlName="email"
+        >
+        <p class="text-danger" *ngIf="adminForm.get('email')?.errors && adminForm.get('email')?.touched">email requerida</p>
 
-            <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail" formControlName="email"
-            [(ngModel)]="admin.email">
+        <input type="password" id="contrasñea" class="form-control" placeholder="Contraseña"
+            aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="contrasena"
+            >
+            <p class="text-danger" *ngIf="adminForm.get('contrasena')?.errors && adminForm.get('contrasena')?.touched">constrasena requerida</p>
 
-            <input type="password" id="contrasñea" class="form-control" placeholder="Contraseña"
-                aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="contrasena"
-                [(ngModel)]="admin.contrasena">
+        <input type="number" id="dni" class="form-control" placeholder="DNI"
+            aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="dni"
+            >
+            <p class="text-danger" *ngIf="adminForm.get('dni')?.errors && adminForm.get('dni')?.touched">DNI requerida</p>
 
+        <label for="foto" >Foto</label> <br />
+        <input type="file" accept=".png, .jpg, .jpeg" (change)="subirFoto($event)" required formControlName="fotoUno" class="form-control" name="fotoUno" id="fotoUno" /> <br />
+        <p class="text-danger" *ngIf="adminForm.get('fotoUno')?.errors && adminForm.get('fotoUno')?.touched">Foto requerida</p>
 
-            <input type="number" id="dni" class="form-control" placeholder="DNI"
-                aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="dni"
-                [(ngModel)]="admin.dni">
-
-            <label for="foto" >Foto</label> <br />
-            <input type="file" accept=".png, .jpg, .jpeg" (change)="subirFoto($event)" required formControlName="fotoUno" class="form-control" name="fotoUno" id="fotoUno" /> <br />
-            <div *ngIf="FotoUnoGet && FotoUnoGet.invalid && FotoUnoGet.touched" class="warningForm">
-                la foto es obligatoria
-            </div>
-            <hr>
-            <button color="info" block="true" class="w-50 btn btn-primary btn-lg" type="submit" (click)="agregarPaciente()">Registrarse</button>
-           </div>
+        <hr>
+        <button color="info" block="true" class="w-50 btn btn-primary btn-lg" type="submit" (click)="agregarPaciente()">Registrarse</button>
+           
         </div>
     </div>
 </form>
