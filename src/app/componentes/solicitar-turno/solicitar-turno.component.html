@@ -1,0 +1,52 @@
+<form class="text-center border border-light p-5 form-group" action="#" id="RegistroPacienteForm"
+    [formGroup]="registroTurnoForm">
+
+    <div class="row g-5">
+        <p class="h4 mb-4">Nuevo Turno</p>
+        <div class="col-md-7 col-lg-8">
+
+            <div>
+                Paciente:
+                <div id="pacienteInput" *ngIf="!esPaciente">
+                    <select class="form-control">
+                        <option *ngFor="let paciente of pacienteList" value="{{paciente.id}}" (click)="SeleccionarPaciente(paciente)">
+                            {{paciente.data.paciente.apellido}} {{paciente.data.paciente.nombre}}
+                        </option>
+                    </select>
+                </div>
+                Especialidad:
+                <p class="text-danger"
+                    *ngIf="registroTurnoForm.get('especialidad')?.errors && registroTurnoForm.get('especialidad')?.touched">
+                    Especialidad requerido</p>
+                <select formControlName="especialidad" class="form-control">
+                    <option *ngFor="let especialidad of especialidadesList" value="{{especialidad}}">{{especialidad}}
+                    </option>
+                </select>
+                Especialista:
+                <select formControlName="especialista" class="form-control">
+                    <option *ngFor="let especialista of especialistaList" value="{{especialista.id}}">
+                        {{especialista.data.especialista.apellido}} {{especialista.data.especialista.nombre}}</option>
+                </select>
+                <p class="text-danger"
+                    *ngIf="registroTurnoForm.get('especialista')?.errors && registroTurnoForm.get('especialista')?.touched">
+                    Especialista requerido</p>
+                Fecha:
+                <input type="date" id="fecha" class="form-control" placeholder="Fecha" min="2022-06-04" max="2022-07-04"
+                    aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="fecha"
+                    (load)="MaxmimoTurno()">
+                <p class="text-danger"
+                    *ngIf="registroTurnoForm.get('fecha')?.errors && registroTurnoForm.get('fecha')?.touched">Fecha
+                    requerida</p>
+                Horario:
+                <input type="time" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="Hora"
+                    formControlName="hora">
+                <p class="text-danger"
+                    *ngIf="registroTurnoForm.get('hora')?.errors && registroTurnoForm.get('hora')?.touched">hora
+                    requerida</p>
+
+                <button color="info" block="true" class="w-50 btn btn-primary btn-lg" type="submit"
+                    (click)="AgregarTurno()">Registrarse</button>
+            </div>
+        </div>
+    </div>
+</form>

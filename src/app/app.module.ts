@@ -20,6 +20,10 @@ import { SpinnerInterceptor } from './shared/spinner.interceptor';
 import { RegistroEspecialistaComponent } from './componentes/registro-especialista/registro-especialista.component';
 import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
 import { NavbarComponent } from './componentes/navbar/navbar.component';
+import { MisTurnosComponent } from './componentes/mis-turnos/mis-turnos.component';
+import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar-turno.component';
+import { NgxCaptchaModule } from 'ngx-captcha';
+import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +33,10 @@ import { NavbarComponent } from './componentes/navbar/navbar.component';
     SpinnerComponent,
     RegistroEspecialistaComponent,
     UsuariosComponent,
-    NavbarComponent
+    NavbarComponent,
+    MisTurnosComponent,
+    SolicitarTurnoComponent,
+    MiPerfilComponent
   ],
   imports: [
     CommonModule,
@@ -41,11 +48,13 @@ import { NavbarComponent } from './componentes/navbar/navbar.component';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     provideFirebaseApp(()=>initializeApp(environment.firebaseConfig)),
     provideStorage(()=>getStorage()),
+    NgxCaptchaModule
+    
   ],
   providers: [
     {
-      provide:HTTP_INTERCEPTORS,useClass:SpinnerInterceptor,multi:true
-    }
+      provide:HTTP_INTERCEPTORS,useClass:SpinnerInterceptor,multi:true,
+    },
   ],
   bootstrap: [AppComponent]
 })

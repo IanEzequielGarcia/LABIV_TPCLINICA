@@ -9,13 +9,10 @@ import { FirebaseService } from 'src/app/servicios/firebase.service';
 export class BienvenidaComponent implements OnInit {
   estaLogueado = this.firestore.isLoggedIn();
   constructor(public firestore:FirebaseService) {
-    this.EsAdmin();
    }
 
   ngOnInit(): void {
   }
-  EsAdmin(){
-    console.log(this.estaLogueado);
-  }
+
 
 }

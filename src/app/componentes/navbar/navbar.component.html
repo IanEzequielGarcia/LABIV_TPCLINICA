@@ -26,9 +26,9 @@
         <li class="nav-item" *ngIf="estaLogueado|async as User">
           <p routerLink="/login" class="nav-link menu-item">{{User.email}}</p>
         </li> 
-        <!--<li class="nav-item" *ngIf="!(estaLogueado|async)">
-            <a href="/registro" class="nav-link menu-item">Registro</a>
-        </li>!-->
+        <li class="nav-item" *ngIf="estaLogueado|async">
+            <a routerLink="/miPerfil" class="nav-link menu-item">MiPerfil</a>
+        </li>
         <li class="nav-item" *ngIf="!(estaLogueado|async)">
             <a routerLink="/login" class="nav-link menu-item">Login</a>
         </li>

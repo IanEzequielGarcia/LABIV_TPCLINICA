@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
 import { NgModule } from '@angular/core';
 @Component({
@@ -8,6 +8,7 @@ import { NgModule } from '@angular/core';
   styleUrls: ['./registro.component.scss']
 })
 export class RegistroComponent implements OnInit {
+  siteKey="6LdyH0ggAAAAAJ_b3FbfmaifgFbU-sjevqMez2Kp";
   registroPacienteForm = new FormGroup({
     nombre : new FormControl('',[Validators.required]),
     apellido : new FormControl('',[Validators.required]),
@@ -18,6 +19,7 @@ export class RegistroComponent implements OnInit {
     obraSocial : new FormControl('',[Validators.required]),
     fotoUno : new FormControl('',[Validators.required]),
     fotoDos : new FormControl('',[Validators.required]),
+    recaptcha : new FormControl('',[Validators.required]),
   });
   paciente={
     nombre:"",
@@ -39,7 +41,7 @@ export class RegistroComponent implements OnInit {
   {
     return this.registroPacienteForm.get('fotoDos');
   }
-  constructor(public firestore:FirebaseService) { }
+  constructor(public firestore:FirebaseService,) { }
 
   ngOnInit(): void {
   }

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { addDoc, collection, getFirestore,getDoc,getDocs,doc,updateDoc  } from 'firebase/firestore';
+import { addDoc, collection, getFirestore,getDoc,getDocs,doc,updateDoc, deleteDoc   } from 'firebase/firestore';
 import { environment } from 'src/environments/environment';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL  } from "firebase/storage";
 import {AngularFireAuth} from '@angular/fire/compat/auth';
+import { getAuth } from "firebase/auth";
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +13,9 @@ export class FirebaseService {
   db = getFirestore(this.app);
   
   constructor(public auth: AngularFireAuth,) {}
-  
+  async BorrarDatoColeccion(coleccion:string,id:string){
+    await deleteDoc(doc(this.db,coleccion,id));
+  }
   async subirFoto(nombre:string,foto:any)
   {
     const storage = getStorage();
@@ -23,6 +26,20 @@ export class FirebaseService {
   }
   async añadirPacientes(paciente:any){
     addDoc(collection(this.db,"pacientes"), {paciente});
+  }
+  async esPaciente(){
+    let returned;
+    this.getCollection("pacientes").then(async (pacientesAux)=>{
+      let usuario = await this.InfoUsuario();
+      console.log(usuario);
+      pacientesAux.forEach((paciente:any)=>{
+        if(usuario?.email==paciente.data.paciente.email)
+        {
+          returned=paciente;
+        }
+      })
+    })
+    return returned;
   }
   async añadirAdmin(admin:any){
     addDoc(collection(this.db,"admins"), {admin});
@@ -73,8 +90,16 @@ export class FirebaseService {
   LogOut() {
     return this.auth.signOut();
   }
+  async InfoUsuario(){
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user !== null) {
+      return user;
+    }
+    return user;
+  }
   async enviarVerificacion(){
-    await this.auth.authState.subscribe((mail)=>{
+    this.auth.authState.subscribe((mail) => {
       return mail?.emailVerified;
     })
     /*user:FirebaseUser = this.db.getCurrentUser();
