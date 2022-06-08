@@ -58,6 +58,20 @@ export class FirebaseService {
     });
     return data;
   }
+  async UpdateTurno(data:any){
+    const washingtonRef = doc(this.db,"turnos",data.id);
+    await updateDoc(washingtonRef, {
+      data:{
+        "especialista":data.data.data.especialista,
+        "paciente": data.data.data.paciente,
+        "fecha": data.data.data.fecha,
+        "hora": data.data.data.hora,
+        "especialidad": data.data.data.especialidad,
+        "estado": data.data.data.estado,
+        "calificacion": data.data.data.calificacion,
+        "resena":data.data.data.resena},
+    });
+  }
   async VerificarEspecialista(collection:string,data:any,id:string){
     const washingtonRef = doc(this.db,collection,id);
     await updateDoc(washingtonRef, {

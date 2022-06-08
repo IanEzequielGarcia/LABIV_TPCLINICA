@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
 
 @Component({
@@ -10,6 +11,11 @@ export class MiPerfilComponent implements OnInit {
   tipoLogueado:string="";
   esEspecialista:boolean=false;
   infoUsuario:any;
+  idUsuario:string="";
+  horaForm = new FormGroup({
+    horaMin : new FormControl('',[Validators.required]),
+    horaMax : new FormControl('',[Validators.required]),
+  });
   constructor(private firestore:FirebaseService) {
     this.GetTipo();
   }
@@ -41,6 +47,7 @@ export class MiPerfilComponent implements OnInit {
           if(usuario?.email==paciente.data.especialista.email)
           {
             this.infoUsuario=paciente.data.especialista;
+            this.idUsuario=paciente.id;
             console.log(this.infoUsuario);
             this.tipoLogueado="especialista";
             console.log("especialista");
@@ -57,6 +64,7 @@ export class MiPerfilComponent implements OnInit {
         pacientesAux.forEach((paciente:any)=>{
           if(usuario?.email==paciente.data.admin.email)
           {
+            this.idUsuario=paciente.id;
             this.infoUsuario=paciente.data.especialista;
             console.log(this.infoUsuario);
             this.tipoLogueado="admin";
@@ -65,5 +73,18 @@ export class MiPerfilComponent implements OnInit {
         })
       })
     }
+  }
+  CargarHoras(){
+    let horas={
+      horaMin:"",
+      horaMax:"",
+      especialidad:"",
+      especialista:""
+    }
+    horas.horaMin=this.horaForm.get('horaMin')?.value;
+    horas.horaMax=this.horaForm.get('horaMax')?.value;
+    horas.especialidad=this.infoUsuario.especialidad;
+    horas.especialista=this.idUsuario;
+    console.log(horas);
   }
 }

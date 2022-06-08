@@ -21,7 +21,9 @@ export class SolicitarTurnoComponent implements OnInit {
     paciente:"",
     fecha:"",
     hora:"",
-    reseña:"",
+    resena:"",
+    estado: "",
+    calificacion: "",
   }
   especialidadesList: any[]=[];
   especialistaList: any[]=[];
@@ -117,8 +119,6 @@ export class SolicitarTurnoComponent implements OnInit {
     //his.firestore.RegisterUser(this.turno.email,this.turno.contrasena);
   }
   SeleccionarPaciente(paciente:any){
-    console.log("aaaaaaaaa");
-    console.log(paciente);
     this.turno.paciente=paciente;
   }
 }

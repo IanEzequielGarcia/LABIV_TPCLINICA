@@ -24,6 +24,7 @@ import { MisTurnosComponent } from './componentes/mis-turnos/mis-turnos.componen
 import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar-turno.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
 import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
+import { TurnosComponent } from './componentes/turnos/turnos.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +37,8 @@ import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
     NavbarComponent,
     MisTurnosComponent,
     SolicitarTurnoComponent,
-    MiPerfilComponent
+    MiPerfilComponent,
+    TurnosComponent
   ],
   imports: [
     CommonModule,

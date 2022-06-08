@@ -121,7 +121,6 @@
         </symbol>
     </svg>
     <main>
-
         <div class="container px-4 py-5" id="hanging-icons">
             <h2 class="pb-2 border-bottom">Perfil</h2>
             <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
@@ -137,19 +136,45 @@
                         <img src="{{infoUsuario.fotoUno}}" height="100px" width="100px">
                     </div>
                 </div>
-                <div class="col d-flex align-items-start" *ngIf="esEspecialista">
+                <div class="col d-flex align-items-start" *ngIf="esEspecialista; else elseBlock">
                     <div class="icon-square bg-light text-dark flex-shrink-0 me-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
-                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-clock" viewBox="0 0 16 16">
+                            <path
+                                d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
                         </svg>
                     </div>
-                    <div>
-                        <h2>Mis Turnos</h2>
-                        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another
-                            sentence and probably just keep going until we run out of words.</p>
+
+                    <div class="col d-flex align-items-start">
+                        <div >
+                            <h2>Mis Horarios</h2>
+                            <form [formGroup]="horaForm">
+                                Desde las: 
+                                <input type="time" id="horaMin" min="08:00:00" formControlName="horaMin">
+                                <br>
+                                Hasta las: 
+                                <input type="time" id="horaMax" max="19:00:00" formControlName="horaMax">
+                                <br>
+                                <button (click)="CargarHoras()">Enviar</button>
+                            </form>
+                        </div>
+                        <div>
+                            <h2>Mis Turnos</h2>
+                            <button style="btn btn-primary w-50" routerLink="/misTurnos">Mis Turnos</button>
+                        </div>
                     </div>
                 </div>
+                <ng-template #elseBlock>
+                    <div class="col d-flex align-items-start">
+                        <div class="col d-flex align-items-start">
+                            <div>
+                                <h2>Solicitar Turno</h2>
+                                <button style="btn btn-primary w-50" routerLink="/solicitarTurno">Mis Turnos</button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
             </div>
         </div>
 

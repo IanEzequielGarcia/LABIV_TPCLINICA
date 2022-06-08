@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <table class="table" *ngIf='esPaciente; else elseBlock'>
+    <table class="table">
         <thead>
             <tr>
                 <th scope="col" (click)="Ordenar('especialidad')">Especialidad</th>
@@ -42,43 +42,9 @@
                     <td>{{turno.data.data.estado}}</td>
                 </ng-template>
                 <td (click)="CancelarTurno(turno)" *ngIf="turno.data.data.estado!='finalizado'">Cancelar</td>
-                <td (click)="MostrarResena(turno)" *ngIf="turno.data.data.estado=='finalizado'">Ver Reseña</td>
-                <td (click)="MostrarEncuesta(turno)" *ngIf="turno.data.data.estado=='finalizado'&&turno.data.data.resena!=''">Completar Encuesta</td>
-                <td (click)="CalificarAtencion(turno)" *ngIf="turno.data.data.estado=='finalizado'&&turno.data.data.calificacion==''">Calificar Atencion</td>
             </tr>
         </tbody>
     </table>
-    <ng-template #elseBlock>
-        <table class="table"#elseBlock id="elseBlock">
-            <thead>
-                <tr>
-                    <th scope="col" (click)="Ordenar('especialidad')">Especialidad</th>
-                    <th scope="col" (click)="Ordenar('paciente')">Paciente</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                </tr>
-                <tr *ngFor="let turno of turnoList">
-                    <td>{{turno.data.data.especialidad}}</td>
-                    <td>{{turno.data.data.paciente}}</td>
-                    <td>{{turno.data.data.fecha}}</td>
-                    <td *ngIf="turno.data.data.estado=='';else elseTurno">En Espera</td>
-                    <ng-template #elseTurno>
-                        <td>{{turno.data.data.estado}}</td>
-                    </ng-template>
-                    <td (click)="CancelarTurno(turno)" *ngIf="turno.data.data.estado!='finalizado'">Cancelar</td>
-                    <td (click)="AceptarTurno(turno)" *ngIf="turno.data.data.estado==''"><i class="bi bi-journal-check"></i></td>
-                    <td (click)="RechazarTurno(turno)" *ngIf="turno.data.data.estado==''"><i class="bi bi-journal-x"></i></td>
-                    <td (click)="MostrarResena(turno)" *ngIf="turno.data.data.estado=='finalizado'">Ver Reseña</td>
-                    <td (click)="FinalizarTurno(turno)" *ngIf="turno.data.data.estado=='aceptado'">Finalizar Turno</td>
-                </tr>
-            </tbody>
-        </table>
-    </ng-template>
 </body>
 
 </html>

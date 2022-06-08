@@ -7,6 +7,7 @@ import { MisTurnosComponent } from './componentes/mis-turnos/mis-turnos.componen
 import { RegistroEspecialistaComponent } from './componentes/registro-especialista/registro-especialista.component';
 import { RegistroComponent } from './componentes/registro/registro.component';
 import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar-turno.component';
+import { TurnosComponent } from './componentes/turnos/turnos.component';
 import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
 import { AdminGuardGuard } from './guards/admin-guard.guard';
 
@@ -49,6 +50,11 @@ const routes: Routes = [
   {
     path: 'solicitarTurno',
     component:SolicitarTurnoComponent//,canActivate:[AdminGuardGuard]
+    //loadChildren: () => import('./juegos/ahorcado/ahorcado.component').then(m => m.AhorcadoComponent)
+  },
+  {
+    path: 'turnos',
+    component:TurnosComponent//,canActivate:[AdminGuardGuard]
     //loadChildren: () => import('./juegos/ahorcado/ahorcado.component').then(m => m.AhorcadoComponent)
   },
   {
