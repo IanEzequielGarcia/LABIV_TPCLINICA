@@ -1,7 +1,7 @@
 ![login](https://github.com/IanEzequielGarcia/LABIV_TPCLINICA/blob/master/readmeFotos/login.PNG "login")
 LOGIN, CON BOTONES DE ACCESO RAPIDO
 
-![registroPacientes](https://github.com/IanEzequielGarcia/LABIV_TPCLINICA/blob/master/readmeFotos/solicitarTurno.PNG "registro Pacientes")
+![registroPacientes](https://github.com/IanEzequielGarcia/LABIV_TPCLINICA/blob/master/readmeFotos/registroPaciente.PNG "registro Pacientes")
 Pantalla donde se registran los pacientes
 
 ![registroEspecialista](https://github.com/IanEzequielGarcia/LABIV_TPCLINICA/blob/master/readmeFotos/registroEspecialista.PNG "registro Especialistas")
