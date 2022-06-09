@@ -39,10 +39,13 @@
             <label for="foto" >Foto</label> <br />
             <input type="file" accept=".png, .jpg, .jpeg" (change)="subirFoto($event,1)" required formControlName="fotoUno" class="form-control" name="fotoUno" id="fotoUno" /> <br />
             <p class="text-danger" *ngIf="registroPacienteForm.get('fotoUno')?.errors && registroPacienteForm.get('fotoUno')?.touched">Foto requerida</p>
-
+            
+            <img [src]="paciente.fotoUno" width="100px" height="100px">
 
             <input type="file" accept=".png, .jpg, .jpeg" (change)="subirFoto($event,2)" required formControlName="fotoDos" class="form-control" name="fotoDos" id="fotoDos" /> <br />
             <p class="text-danger" *ngIf="registroPacienteForm.get('fotoDos')?.errors && registroPacienteForm.get('fotoDos')?.touched">Foto requerida</p>
+
+            <img [src]="paciente.fotoDos" width="100px" height="100px">
 
             <ngx-recaptcha2 #captchaElem
                 [siteKey]="siteKey"
