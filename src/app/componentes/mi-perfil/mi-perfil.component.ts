@@ -52,20 +52,21 @@ export class MiPerfilComponent implements OnInit {
             this.tipoLogueado="especialista";
             console.log("especialista");
             this.esEspecialista=true;
+            encontrado=true;
           }
         })
       })
     }
     if(!encontrado)
     {
-      this.firestore.getCollection("admin").then(async (pacientesAux)=>{
+      this.firestore.getCollection("admins").then(async (pacientesAux)=>{
         let usuario = await this.firestore.InfoUsuario();
-        //console.log(usuario);
+        console.log(usuario);
         pacientesAux.forEach((paciente:any)=>{
-          if(usuario?.email==paciente.data.admin.email)
+          if(usuario?.email==paciente.data.admin.email.toLowerCase())
           {
             this.idUsuario=paciente.id;
-            this.infoUsuario=paciente.data.especialista;
+            this.infoUsuario=paciente.data.admin;
             console.log(this.infoUsuario);
             this.tipoLogueado="admin";
             console.log("ninguno/admin");

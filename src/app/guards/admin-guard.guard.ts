@@ -13,29 +13,26 @@ export class AdminGuardGuard implements CanActivate, CanDeactivate<unknown> {
   async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean | UrlTree>{
-      let user = await this.firestore.isLoggedIn();
-      let esAdmin = false;
-
-        this.firestore.getCollection("admins").then(async(pacientesAux)=>{
-        pacientesAux.forEach((paciente:any)=>{
+        this.firestore.getCollection("admins").then(async(pacientesAux)=>
+        {
+          let user = await this.firestore.InfoUsuario();
+          let esAdmin = false;
+          pacientesAux.forEach(async (paciente:any)=>{
           console.log(paciente.data.admin);
-          if(paciente.data.admin.tipo=="admin")
+          //console.log(paciente.data.admin.email);
+          console.log(user?.email);
+          if(paciente.data.admin.email.toLowerCase()==user?.email)
           {
             console.log("entro");
             esAdmin=true;
           }
         }
         )
+        if(!esAdmin){
+          this.router.navigateByUrl('bienvenido');
+        }
       })
-      console.log(esAdmin);
-      let loggeado = user? true:false;
-      if(loggeado&&esAdmin){
-        return true;
-      }else
-      {
-        this.router.navigateByUrl('bienvenido');
-        return false;
-      }
+      return true;
   }
   canDeactivate(
     component: unknown,

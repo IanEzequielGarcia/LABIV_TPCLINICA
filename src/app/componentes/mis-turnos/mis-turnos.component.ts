@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
 import Swal from 'sweetalert2';
+//import Swal from 'sweetalert2/dist/sweetalert2.js'
 @Component({
   selector: 'app-mis-turnos',
   templateUrl: './mis-turnos.component.html',

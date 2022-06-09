@@ -34,7 +34,7 @@ const routes: Routes = [
   },
   {
     path: 'usuarios',
-    component:UsuariosComponent//,canActivate:[AdminGuardGuard]
+    component:UsuariosComponent,canActivate:[AdminGuardGuard]
     //loadChildren: () => import('./juegos/ahorcado/ahorcado.component').then(m => m.AhorcadoComponent)
   },
   {
@@ -54,7 +54,7 @@ const routes: Routes = [
   },
   {
     path: 'turnos',
-    component:TurnosComponent//,canActivate:[AdminGuardGuard]
+    component:TurnosComponent,canActivate:[AdminGuardGuard]
     //loadChildren: () => import('./juegos/ahorcado/ahorcado.component').then(m => m.AhorcadoComponent)
   },
   {
