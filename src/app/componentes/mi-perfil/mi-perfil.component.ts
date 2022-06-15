@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
+import Swal from 'sweetalert2';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -9,15 +12,16 @@ import { FirebaseService } from 'src/app/servicios/firebase.service';
 })
 export class MiPerfilComponent implements OnInit {
   tipoLogueado:string="";
-  esEspecialista:boolean=false;
   infoUsuario:any;
   idUsuario:string="";
   horaForm = new FormGroup({
     horaMin : new FormControl('',[Validators.required]),
     horaMax : new FormControl('',[Validators.required]),
   });
+  turnoList:any[] = [];
   constructor(private firestore:FirebaseService) {
     this.GetTipo();
+    this.GetTurnos();
   }
 
   ngOnInit(): void {
@@ -30,7 +34,7 @@ export class MiPerfilComponent implements OnInit {
       pacientesAux.forEach((paciente:any)=>{
         if(usuario?.email==paciente.data.paciente.email)
         {
-          this.infoUsuario=paciente.data.paciente;
+          this.infoUsuario=paciente;
           console.log(this.infoUsuario);
           this.tipoLogueado="paciente";
           console.log("paciente");
@@ -46,12 +50,11 @@ export class MiPerfilComponent implements OnInit {
         pacientesAux.forEach((paciente:any)=>{
           if(usuario?.email==paciente.data.especialista.email)
           {
-            this.infoUsuario=paciente.data.especialista;
+            this.infoUsuario=paciente;
             this.idUsuario=paciente.id;
             console.log(this.infoUsuario);
             this.tipoLogueado="especialista";
             console.log("especialista");
-            this.esEspecialista=true;
             encontrado=true;
           }
         })
@@ -66,7 +69,7 @@ export class MiPerfilComponent implements OnInit {
           if(usuario?.email==paciente.data.admin.email.toLowerCase())
           {
             this.idUsuario=paciente.id;
-            this.infoUsuario=paciente.data.admin;
+            this.infoUsuario=paciente;
             console.log(this.infoUsuario);
             this.tipoLogueado="admin";
             console.log("ninguno/admin");
@@ -88,4 +91,62 @@ export class MiPerfilComponent implements OnInit {
     horas.especialista=this.idUsuario;
     console.log(horas);
   }
+  GetTurnos(){
+    this.turnoList = [];
+    this.firestore.getCollection("turnos").then(async (pacientesAux)=>{
+      pacientesAux.forEach((paciente:any)=>{
+        console.log(this.tipoLogueado);
+        if(this.tipoLogueado=="especialista")
+        {
+          console.log(paciente);
+          console.log(this.infoUsuario);
+          if(this.infoUsuario.id==paciente.data.data.especialista)
+          {
+            this.turnoList.push(paciente);
+            console.log(paciente);
+          }
+        }else if(this.tipoLogueado=="paciente"){
+          if(this.infoUsuario.id==paciente.data.data.paciente&&paciente.data.data.estado=="finalizado")
+          {
+            this.turnoList.push(paciente);
+            console.log(paciente);
+          }
+        }else if(this.tipoLogueado=="admin"&&paciente.data.data.estado=="finalizado"){
+          this.turnoList.push(paciente);
+          console.log(paciente);
+        }
+      })
+    })
+  }
+  async AlertaHistorial(data:any){
+
+  }
+  downloadPdf() {
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text('PACIENTE PDF', 11, 8);
+    doc.setFontSize(11);
+    doc.setTextColor(100);
+
+    var data:any[]=[];
+    var head:any[]=[["ESPECIALIDAD","ESPECIALISTA","PACIENTE","FECHA"]]
+    this.turnoList.forEach(e=>{
+      var tempObj =[];
+      tempObj.push(e.data.data.especialidad);
+      tempObj.push(e.data.data.especialista);
+      tempObj.push(e.data.data.paciente);
+      tempObj.push(e.data.data.fecha);
+      data.push(tempObj);
+    });
+    (doc as any).autoTable({
+      head: head,
+      body: data,
+      theme: 'plain',
+      didDrawCell: (data:any) => {
+        console.log(data.column.index)
+      }
+    });
+    doc.output('dataurlnewwindow');
+  }
 }
+

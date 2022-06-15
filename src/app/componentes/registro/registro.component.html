@@ -1,59 +1,162 @@
-<form class="text-center border border-light p-5"  action="#" id="RegistroPacienteForm" [formGroup]="registroPacienteForm">
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="formFotosDiv" style="text-align:center;"> 
+        <img class="card-img-top"  (click)="pacienteForm=true" style="border-radius:50%; width: 250px; height: 250px;" src="https://images01.nicepage.com/a1389d7bc73adea1e1c1fb7e/9d8102178c5e5d878ec5f3f0/1773337_medium2000.jpg" alt="Registrar Especialista">
+        <img class="card-img-top"  (click)="pacienteForm=false;CargarCaptcha();" style="border-radius:50%; width: 250px; height: 250px;"src="https://images01.nicepage.com/a1389d7bc73adea1e1c1fb7e/1bed0f8034fe5d17a6891c42/2302047_medium2000.jpg" alt="Registrar Paciente">
+
+    </div>
+    <div *ngIf="pacienteForm; else especialistaForm">
+        <form class="text-center border border-light p-5"  action="#" id="RegistroPacienteForm" [formGroup]="registroPacienteForm">
+
+            <div class="row g-5">
+                <p class="h4 mb-4">Registro Paciente</p>
+        
+                <div class="col-md-7 col-lg-8">
+                    <div class="row g-4">
+                    <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="Nombre" formControlName="nombre" 
+                    >
+                    <p class="text-danger" *ngIf="registroPacienteForm.get('nombre')?.errors && registroPacienteForm.get('nombre')?.touched">Nombre requerido</p>
+                    <input type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Apellido" formControlName="apellido"
+                    >
+                    <p class="text-danger" *ngIf="registroPacienteForm.get('apellido')?.errors && registroPacienteForm.get('apellido')?.touched">Apellido requerido</p>
+                    
+                    <input type="number" id="edad" class="form-control" placeholder="Edad"
+                    aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="edad"
+                    >
+                    <p class="text-danger" *ngIf="registroPacienteForm.get('edad')?.errors && registroPacienteForm.get('edad')?.touched">Edad requerida</p>
+
+                    <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail" formControlName="email"
+                    >
+                    <p class="text-danger" *ngIf="registroPacienteForm.get('email')?.errors && registroPacienteForm.get('email')?.touched">email requerida</p>
+
+                    <input type="password" id="contrasñea" class="form-control" placeholder="Contraseña"
+                        aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="contrasena"
+                        >
+                        <p class="text-danger" *ngIf="registroPacienteForm.get('contrasena')?.errors && registroPacienteForm.get('contrasena')?.touched">constrasena requerida</p>
+        
+                        <input type="text" id="obraSocial" class="form-control" placeholder="Obra Social"
+                        aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="obraSocial"
+                        >
+                        <p class="text-danger" *ngIf="registroPacienteForm.get('obraSocial')?.errors && registroPacienteForm.get('obraSocial')?.touched">Obra Social requerida</p>
+        
+                    <input type="number" id="dni" class="form-control" placeholder="DNI"
+                        aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="dni"
+                        >
+                        <p class="text-danger" *ngIf="registroPacienteForm.get('dni')?.errors && registroPacienteForm.get('dni')?.touched">DNI requerida</p>
+        
+                    <label for="foto" >Foto</label> <br />
+                    <input type="file" accept=".png, .jpg, .jpeg" (change)="subirFoto($event,1)" required formControlName="fotoUno" class="form-control" name="fotoUno" id="fotoUno" /> <br />
+                    <p class="text-danger" *ngIf="registroPacienteForm.get('fotoUno')?.errors && registroPacienteForm.get('fotoUno')?.touched">Foto requerida</p>
+                    
+                    
+                    <input type="file" accept=".png, .jpg, .jpeg" (change)="subirFoto($event,2)" required formControlName="fotoDos" class="form-control" name="fotoDos" id="fotoDos" /> <br />
+                    <p class="text-danger" *ngIf="registroPacienteForm.get('fotoDos')?.errors && registroPacienteForm.get('fotoDos')?.touched">Foto requerida</p>
+        
+                    <div style="display: flex;">
+                        <ngx-recaptcha2 #captchaElem
+                        [siteKey]="siteKey"
+                        formControlName="recaptcha">
+                        </ngx-recaptcha2>
+                        <img [src]="paciente.fotoUno" width="100px" height="100px">
+                        <img [src]="paciente.fotoDos" width="100px" height="100px">
+                    </div>
+                   
+                    <hr>
+                    <button color="info" block="true" class="w-50 btn btn-primary btn-lg" type="submit" [disabled]="registroPacienteForm.invalid" (click)="agregarPaciente()">Registrarse</button>
+                </div>
+        
+                </div>
+            </div>
+        </form>
+    </div>
+    <ng-template #especialistaForm>
+        <form class="text-center border border-light p-5" action="#" id="registroEspecialistaForm"
+    [formGroup]="registroEspecialistaForm">
     <div class="row g-5">
-        <p class="h4 mb-4">Registro Paciente</p>
-
+        <p class="h4 mb-4">Registro Especialista</p>
         <div class="col-md-7 col-lg-8">
-            <div class="row g-4">
-            <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="Nombre" formControlName="nombre" 
-            >
-            <p class="text-danger" *ngIf="registroPacienteForm.get('nombre')?.errors && registroPacienteForm.get('nombre')?.touched">Nombre requerido</p>
-            <input type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Apellido" formControlName="apellido"
-            >
-            <p class="text-danger" *ngIf="registroPacienteForm.get('apellido')?.errors && registroPacienteForm.get('apellido')?.touched">Apellido requerido</p>
-            
+            <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="Nombre"
+                formControlName="nombre">
+            <p class="text-danger"
+                *ngIf="registroEspecialistaForm.get('nombre')?.errors && registroEspecialistaForm.get('nombre')?.touched">
+                Nombre requerido</p>
+            <input type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Apellido"
+                formControlName="apellido">
+            <p class="text-danger"
+                *ngIf="registroEspecialistaForm.get('apellido')?.errors && registroEspecialistaForm.get('apellido')?.touched">
+                Apellido requerido</p>
+
             <input type="number" id="edad" class="form-control" placeholder="Edad"
-            aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="edad"
-            >
-            <p class="text-danger" *ngIf="registroPacienteForm.get('edad')?.errors && registroPacienteForm.get('edad')?.touched">Edad requerida</p>
+                aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="edad">
+            <p class="text-danger"
+                *ngIf="registroEspecialistaForm.get('edad')?.errors && registroEspecialistaForm.get('edad')?.touched">
+                Edad requerido</p>
 
-            <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail" formControlName="email"
-            >
-            <p class="text-danger" *ngIf="registroPacienteForm.get('email')?.errors && registroPacienteForm.get('email')?.touched">email requerida</p>
+            <input type="email" id="email" class="form-control" placeholder="email"
+                aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="email">
+            <p class="text-danger"
+                *ngIf="registroEspecialistaForm.get('email')?.errors && registroEspecialistaForm.get('email')?.touched">
+                Email requerido</p>
 
-            <input type="password" id="contrasñea" class="form-control" placeholder="Contraseña"
-                aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="contrasena"
-                >
-                <p class="text-danger" *ngIf="registroPacienteForm.get('contrasena')?.errors && registroPacienteForm.get('contrasena')?.touched">constrasena requerida</p>
+            <input type="password" id="contrasena" class="form-control" placeholder="Contraseña"
+                aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="contrasena">
+            <p class="text-danger"
+                *ngIf="registroEspecialistaForm.get('contrasena')?.errors && registroEspecialistaForm.get('contrasena')?.touched">
+                Contraseña requerido</p>
 
-                <input type="text" id="obraSocial" class="form-control" placeholder="Obra Social"
-                aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="obraSocial"
-                >
-                <p class="text-danger" *ngIf="registroPacienteForm.get('obraSocial')?.errors && registroPacienteForm.get('obraSocial')?.touched">Obra Social requerida</p>
+            <select formControlName="especialidad" class="form-control">
+                <option *ngFor="let especialidad of especialidadesList" value="{{especialidad}}">{{especialidad}}
+                </option>
+            </select>
+            <p class="text-danger"
+                *ngIf="registroEspecialistaForm.get('especialidad')?.errors && registroEspecialistaForm.get('especialidad')?.touched">
+                Especialidad requerido</p>
+            <input placeholder="O agregue una nueva" id="especialidadInput">
+            <button (click)="AgregarEspecialidad()">Agregar Especialidad</button>
+            <!--<input type="text" id="obraSocial" class="form-control" placeholder="Especialidad"
+                aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="especialidad" >-->
 
             <input type="number" id="dni" class="form-control" placeholder="DNI"
-                aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="dni"
-                >
-                <p class="text-danger" *ngIf="registroPacienteForm.get('dni')?.errors && registroPacienteForm.get('dni')?.touched">DNI requerida</p>
+                aria-describedby="defaultRegisterFormPhoneHelpBlock" formControlName="dni">
+            <p class="text-danger"
+                *ngIf="registroEspecialistaForm.get('dni')?.errors && registroEspecialistaForm.get('dni')?.touched">DNI
+                requerido</p>
 
-            <label for="foto" >Foto</label> <br />
-            <input type="file" accept=".png, .jpg, .jpeg" (change)="subirFoto($event,1)" required formControlName="fotoUno" class="form-control" name="fotoUno" id="fotoUno" /> <br />
-            <p class="text-danger" *ngIf="registroPacienteForm.get('fotoUno')?.errors && registroPacienteForm.get('fotoUno')?.touched">Foto requerida</p>
-            
-            <img [src]="paciente.fotoUno" width="100px" height="100px">
-
-            <input type="file" accept=".png, .jpg, .jpeg" (change)="subirFoto($event,2)" required formControlName="fotoDos" class="form-control" name="fotoDos" id="fotoDos" /> <br />
-            <p class="text-danger" *ngIf="registroPacienteForm.get('fotoDos')?.errors && registroPacienteForm.get('fotoDos')?.touched">Foto requerida</p>
-
-            <img [src]="paciente.fotoDos" width="100px" height="100px">
-
-            <ngx-recaptcha2 #captchaElem
-                [siteKey]="siteKey"
-                formControlName="recaptcha">
-            </ngx-recaptcha2>
+            <label for="foto">Foto</label> <br />
+            <input type="file" accept=".png, .jpg, .jpeg" (change)="subirFotoEspecialista($event)" required
+                formControlName="fotoUno" class="form-control" name="fotoUno" id="fotoUno" /> <br />
+            <p class="text-danger"
+                *ngIf="registroEspecialistaForm.get('fotoUno')?.errors && registroEspecialistaForm.get('fotoUno')?.touched">
+                Foto requerida</p>
+            <div class="wrapper">
+                <div class="captcha-area">
+                    <div class="captcha-img">
+                        <!--<img src="captcha-bg.png" alt="Captch Background">-->
+                        <span class="captcha"></span>
+                    </div>
+                    <button formControlName="captcha" class="reload-btn" (click)="ReloadButton()"><i class="bi bi-arrow-clockwise"></i></button>
+                </div>
+                <form action="#" class="input-area">
+                    <input type="text" placeholder="Enter captcha" maxlength="6" spellcheck="false" required>
+                    <button class="check-btn" (click)="CheckButton()">Check</button>
+                </form>
+                <div class="status-text"></div>
+            </div>
+            <img [src]="especialista.fotoUno" width="100px" height="100px">
             <hr>
-            <button color="info" block="true" class="w-50 btn btn-primary btn-lg" type="submit" [disabled]="registroPacienteForm.invalid" (click)="agregarPaciente()">Registrarse</button>
-        </div>
+            <button color="info" block="true" class="w-50 btn btn-primary btn-lg" type="submit"
+                (click)="AgregarEspecialista()" [disabled]="registroEspecialistaForm.invalid">Registrarse</button>
         </div>
     </div>
 </form>
+    </ng-template>
+</body>
+</html>
