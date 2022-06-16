@@ -11,7 +11,7 @@
 
     <!--BOOTSTRAP-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
+
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/features/">
 
 
@@ -135,8 +135,8 @@
                     </div>
                     <div>
                         <h2>Sobre mi</h2>
-                        <p>{{infoUsuario.apellido}} {{infoUsuario.nombre}}</p>
-                        <img src="{{infoUsuario.fotoUno}}" height="100px" width="100px">
+                        <p>{{infoPerfil.apellido}} {{infoPerfil.nombre}}</p>
+                        <img src="{{infoPerfil.fotoUno}}" height="100px" width="100px">
                     </div>
                 </div>
                 <div class="col d-flex align-items-start" *ngIf="tipoLogueado=='especialista'; else elseBlock">
@@ -164,12 +164,7 @@
                         </div>
                         <div>
                             <h2>Mis Turnos</h2>
-                            <button style="btn btn-primary w-50" routerLink="/misTurnos">Mis Turnos</button>
-                        </div>
-                        <div>
-                            <h2>
-                                Historia Clinica
-                            </h2>
+                            <button style="btn btn-primary w-50" routerLink="/usuario/misTurnos">Mis Turnos</button>
                         </div>
                     </div>
                 </div>
@@ -182,7 +177,7 @@
                             </div>
                             <div>
                                 <h2>Mis Turnos</h2>
-                                <button style="btn btn-primary w-50" routerLink="/misTurnos">Mis Turnos</button>
+                                <button style="btn btn-primary w-50" routerLink="/usuario/misTurnos">Mis Turnos</button>
                             </div>
                         </div>
                     </div>
@@ -193,55 +188,39 @@
                                         <h2>Ver Turnos</h2>
                                         <button style="btn btn-primary w-50" routerLink="/turnos">Turnos</button>
                                     </div>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Especialidad</th>
-                                                <th scope="col">Especialista</th>
-                                                <th scope="col">Paciente</th>
-                                                <th scope="col">Fecha</th>
-                                                <th scope="col">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                            </tr>
-                                            <tr *ngFor="let turno of turnoList">
-                                                <td>{{turno.data.data.especialidad}}</td>
-                                                <td>{{turno.data.data.especialista}}</td>
-                                                <td>{{turno.data.data.paciente}}</td>
-                                                <td>{{turno.data.data.fecha}}</td>
-                                                <td (click)="AlertaHistorial(turno)">Historial</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div style="btn btn-success" (click)="downloadPdf()">Convertir a PDF</div>
                                 </div>
                             </div>
                         </ng-template>
                 </ng-template>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Especialidad</th>
-                            <th scope="col">Especialista</th>
-                            <th scope="col">Paciente</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        </tr>
-                        <tr *ngFor="let turno of turnoList">
-                            <td>{{turno.data.data.especialidad}}</td>
-                            <td>{{turno.data.data.especialista}}</td>
-                            <td>{{turno.data.data.paciente}}</td>
-                            <td>{{turno.data.data.fecha}}</td>
-                            <td (click)="AlertaHistorial(turno)">Historial</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div>
+                    <h2>
+                        Historia Clinica
+                    </h2>
+                    <table class="table">
+
+                        <thead>
+                            <tr>
+                                <th scope="col">Especialidad</th>
+                                <th scope="col">Especialista</th>
+                                <th scope="col">Paciente</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            </tr>
+                            <tr *ngFor="let turno of turnoList">
+                                <td>{{turno.data.data.especialidad}}</td>
+                                <td>{{turno.data.data.especialista}}</td>
+                                <td>{{turno.data.data.paciente}}</td>
+                                <td>{{turno.data.data.fecha}}</td>
+                                <td (click)="AlertaHistorial(turno)">Historial</td>
+                            </tr>
+                        </tbody>
+                        <button type="button" style="btn btn-success" (click)="downloadPdf()">Convertir a PDF</button>
+                    </table>
+                </div>
             </div>
         </div>
 

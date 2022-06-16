@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
 import { NgModule } from '@angular/core';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
@@ -76,9 +77,19 @@ export class RegistroComponent implements OnInit {
     this.firestore.añadirPacientes(this.paciente);
     try {
       this.firestore.RegisterUser(this.paciente.email,this.paciente.contrasena);
-      alert("Registrado correctamente ");
+      Swal.fire(
+        'Exito!',
+        'Registrado correctamente',
+        'success'
+      );
+      //this.firestore.enviarVerificacion();
+      //alert("Registrado correctamente ");
     } catch (error) {
-      alert("No se pudo registrar "+error);
+      Swal.fire(
+        'ERROR',
+        'no se pudo registrar',
+        'error'
+      );
     }
   }
   /*ESPECIALISTA*/
@@ -103,7 +114,22 @@ export class RegistroComponent implements OnInit {
     //this.especialista.tipo="especialista";
     console.log(this.especialista);
     this.firestore.añadirEpecialistas(this.especialista);
-    this.firestore.RegisterUser(this.especialista.email,this.especialista.contrasena);
+    try {
+      this.firestore.RegisterUser(this.especialista.email,this.especialista.contrasena);
+      Swal.fire(
+        'Exito!',
+        'Registrado correctamente',
+        'success'
+      );
+      //this.firestore.enviarVerificacion();
+      //alert("Registrado correctamente ");
+    } catch (error) {
+      Swal.fire(
+        'ERROR',
+        'no se pudo registrar',
+        'error'
+      );
+    }
   }
   AgregarEspecialidad(){
     console.log((<HTMLInputElement> document.getElementById("especialidadInput")).value);
@@ -180,7 +206,9 @@ export class RegistroComponent implements OnInit {
     especialidad:"",
     fotoUno:"",
     tipo:"especialista",
-    verificado:false
+    verificado:false,
+    horaMin:"",
+    horaMax:"",
   }
   get FotoUnoGetEspecialista()
   {

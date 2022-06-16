@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
-import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -13,6 +12,7 @@ import 'jspdf-autotable';
 export class MiPerfilComponent implements OnInit {
   tipoLogueado:string="";
   infoUsuario:any;
+  infoPerfil:any;
   idUsuario:string="";
   horaForm = new FormGroup({
     horaMin : new FormControl('',[Validators.required]),
@@ -34,6 +34,7 @@ export class MiPerfilComponent implements OnInit {
       pacientesAux.forEach((paciente:any)=>{
         if(usuario?.email==paciente.data.paciente.email)
         {
+          this.infoPerfil=paciente.data.paciente;
           this.infoUsuario=paciente;
           console.log(this.infoUsuario);
           this.tipoLogueado="paciente";
@@ -50,6 +51,7 @@ export class MiPerfilComponent implements OnInit {
         pacientesAux.forEach((paciente:any)=>{
           if(usuario?.email==paciente.data.especialista.email)
           {
+            this.infoPerfil=paciente.data.especialista;
             this.infoUsuario=paciente;
             this.idUsuario=paciente.id;
             console.log(this.infoUsuario);
@@ -64,10 +66,10 @@ export class MiPerfilComponent implements OnInit {
     {
       this.firestore.getCollection("admins").then(async (pacientesAux)=>{
         let usuario = await this.firestore.InfoUsuario();
-        console.log(usuario);
         pacientesAux.forEach((paciente:any)=>{
           if(usuario?.email==paciente.data.admin.email.toLowerCase())
           {
+            this.infoPerfil=paciente.data.admin;
             this.idUsuario=paciente.id;
             this.infoUsuario=paciente;
             console.log(this.infoUsuario);
@@ -79,17 +81,21 @@ export class MiPerfilComponent implements OnInit {
     }
   }
   CargarHoras(){
-    let horas={
+    this.infoUsuario.data.especialista.horaMin=this.horaForm.get('horaMin')?.value;
+    this.infoUsuario.data.especialista.horaMax=this.horaForm.get('horaMax')?.value;
+    /*let horas={
       horaMin:"",
       horaMax:"",
       especialidad:"",
       especialista:""
+      
     }
     horas.horaMin=this.horaForm.get('horaMin')?.value;
     horas.horaMax=this.horaForm.get('horaMax')?.value;
     horas.especialidad=this.infoUsuario.especialidad;
-    horas.especialista=this.idUsuario;
-    console.log(horas);
+    horas.especialista=this.idUsuario;*/
+    this.firestore.VerificarEspecialista("especialistas",this.infoUsuario.data.especialista,this.infoUsuario.id);
+    console.log(this.infoUsuario);
   }
   GetTurnos(){
     this.turnoList = [];

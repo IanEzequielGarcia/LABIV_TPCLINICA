@@ -20,11 +20,11 @@ import { SpinnerInterceptor } from './shared/spinner.interceptor';
 import { RegistroEspecialistaComponent } from './componentes/registro-especialista/registro-especialista.component';
 import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
 import { NavbarComponent } from './componentes/navbar/navbar.component';
-import { MisTurnosComponent } from './componentes/mis-turnos/mis-turnos.component';
 import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar-turno.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
-import { MiPerfilComponent } from './componentes/mi-perfil/mi-perfil.component';
 import { TurnosComponent } from './componentes/turnos/turnos.component';
+import { PerfilModule } from './componentes/perfil/perfil.module';
+import { PerfilRoutingModule } from './componentes/perfil/perfil-routing.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,9 +35,7 @@ import { TurnosComponent } from './componentes/turnos/turnos.component';
     RegistroEspecialistaComponent,
     UsuariosComponent,
     NavbarComponent,
-    MisTurnosComponent,
     SolicitarTurnoComponent,
-    MiPerfilComponent,
     TurnosComponent
   ],
   imports: [
@@ -50,8 +48,8 @@ import { TurnosComponent } from './componentes/turnos/turnos.component';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     provideFirebaseApp(()=>initializeApp(environment.firebaseConfig)),
     provideStorage(()=>getStorage()),
-    NgxCaptchaModule
-    
+    NgxCaptchaModule,
+    PerfilRoutingModule
   ],
   providers: [
     {

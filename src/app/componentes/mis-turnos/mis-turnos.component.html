@@ -41,7 +41,7 @@
                 <ng-template #elseTurno>
                     <td>{{turno.data.data.estado}}</td>
                 </ng-template>
-                <td (click)="CancelarTurno(turno)" *ngIf="turno.data.data.estado!='finalizado'">Cancelar</td>
+                <td (click)="CancelarTurno(turno)" *ngIf="turno.data.data.estado!='finalizado'&&turno.data.data.estado!='cancelado'">Cancelar</td>
                 <td (click)="MostrarResena(turno)" *ngIf="turno.data.data.estado=='finalizado'">Ver Reseña</td>
                 <td (click)="MostrarEncuesta(turno)" *ngIf="turno.data.data.estado=='finalizado'&&turno.data.data.resena!=''">Completar Encuesta</td>
                 <td (click)="CalificarAtencion(turno)" *ngIf="turno.data.data.estado=='finalizado'&&turno.data.data.calificacion==''">Calificar Atencion</td>
@@ -70,7 +70,7 @@
                     <ng-template #elseTurno>
                         <td>{{turno.data.data.estado}}</td>
                     </ng-template>
-                    <td (click)="CancelarTurno(turno)" *ngIf="turno.data.data.estado!='finalizado'">Cancelar</td>
+                    <td (click)="CancelarTurno(turno)" *ngIf="turno.data.data.estado!='finalizado'&&turno.data.data.estado!='cancelado'">Cancelar</td>
                     <td (click)="AceptarTurno(turno)" *ngIf="turno.data.data.estado==''"><i class="bi bi-journal-check"></i></td>
                     <td (click)="RechazarTurno(turno)" *ngIf="turno.data.data.estado==''"><i class="bi bi-journal-x"></i></td>
                     <td (click)="MostrarResena(turno)" *ngIf="turno.data.data.estado=='finalizado'">Ver Reseña</td>

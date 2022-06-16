@@ -86,7 +86,10 @@ export class FirebaseService {
         "fotoUno": data.fotoUno,
         "nombre": data.nombre,
         "tipo": data.tipo,
-        "verificado":data.verificado},
+        "verificado":data.verificado,
+        "horaMin":data.horaMin,
+        "horaMax":data.horaMax,
+        },
     });
   }
   async RegisterUser(email:string, password:string) {
