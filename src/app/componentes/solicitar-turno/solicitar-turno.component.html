@@ -53,20 +53,26 @@
                     </div>
                     <div *ngSwitchCase="3">
                         Fecha:
-                        <input type="date" id="fecha" class="form-control" placeholder="Fecha" min="2022-06-04"
-                            max="2022-07-04" aria-describedby="defaultRegisterFormPhoneHelpBlock"
+                        <input type="date" id="fecha" class="form-control" placeholder="Fecha" (change)="pasoSwitch=4"
+                            aria-describedby="defaultRegisterFormPhoneHelpBlock"
                             formControlName="fecha" (load)="MaxmimoTurno()">
                         <p class="text-danger"
                             *ngIf="registroTurnoForm.get('fecha')?.errors && registroTurnoForm.get('fecha')?.touched">
                             Fecha
                             requerida
                         </p>
+                    </div>
+                    <div *ngSwitchCase="4">
                         Horario:
                         <input type="time" id="hora" class="form-control mb-4" placeholder="Hora" (click)="MaximaHora()"
-                            min="08:00:00" max="17:00:00" formControlName="hora">
+                            formControlName="hora">
                         <p class="text-danger"
                             *ngIf="registroTurnoForm.get('hora')?.errors && registroTurnoForm.get('hora')?.touched">hora
                             requerida
+                        </p>
+                        <p class="text-danger"
+                            *ngIf="registroTurnoForm.errors?.['errorHorasMaxMin']">
+                            HORARIOS DE ATENCION DEL ESPECIALISTA: DE {{this.especialista.data.especialista.horaMin}} HASTA {{this.especialista.data.especialista.horaMax}}
                         </p>
                     </div>
                 </div>

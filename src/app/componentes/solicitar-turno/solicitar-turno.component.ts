@@ -1,5 +1,7 @@
+import { IfStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidationErrors, AbstractControl, ValidatorFn } from '@angular/forms';
+import { time } from 'console';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
 
 @Component({
@@ -24,14 +26,15 @@ export class SolicitarTurnoComponent implements OnInit {
   pacienteList:any[]=[];
   usuario:any;
   esPaciente=false;
-  especialista:any;
+  especialista:any=null;
     registroTurnoForm = new FormGroup({
     especialidad : new FormControl('',[Validators.required]),
     especialista : new FormControl('',[Validators.required]),
     turno : new FormControl('',[Validators.required]),
     fecha : new FormControl('',[Validators.required]),
     hora : new FormControl('',[Validators.required,Validators.minLength(4)]),
-  });
+  },{validators:this.HoraValidator('hora')},
+  );
   constructor(public firestore:FirebaseService) {
     this.getEspecialistas();
     this.getEspecialidad();
@@ -49,15 +52,42 @@ export class SolicitarTurnoComponent implements OnInit {
     (document.getElementById('fecha') as HTMLInputElement).max = `${now.getFullYear()}-${now.getMonth()+1}-${now.getUTCDay()+14}`;
     (document.getElementById('fecha') as HTMLInputElement).min = `${now.getFullYear()}-${now.getMonth()+1}-${now.getUTCDay()}`;
     console.log(`${now.getFullYear()}-${now.getMonth()+1}-${now.getUTCDay()+14}`);
+    console.log((document.getElementById('fecha') as HTMLInputElement).value);
   }
   MaximaHora()
   {
     this.getEspecialistas(this.registroTurnoForm.get('especialista')?.value);
-    console.log(this.especialista);
+    //console.log(this.especialista);
     //this.registroTurnoForm.get('especialista')?
 
     (document.getElementById('hora') as HTMLInputElement).value;
     (document.getElementById('hora') as HTMLInputElement).value;
+  }
+  HoraValidator(controlHora:string):ValidatorFn{
+    return(control:AbstractControl):ValidationErrors|null =>{
+      const formGroup= control as FormGroup
+      const hora= formGroup.get(controlHora)?.value;
+      //console.log(this.especialista);
+      if(this.especialista!=null)
+      {
+        let horaMin=Date.parse(`01/01/2011 ${this.especialista.data.especialista.horaMin}`);
+        let horaMax=Date.parse(`01/01/2011 ${this.especialista.data.especialista.horaMax}`);
+        let horaAux=Date.parse(`01/01/2011 ${hora}`);
+        console.log("hora min: "+horaMin+" hora max: "+horaMax);
+        console.log("hora elegida"+horaAux);
+        if(horaAux>=horaMin&&horaAux<=horaMax)
+        {
+          //console.log("hora min: "+this.especialista.data.especialista.horaMin+" hora max: "+this.especialista.data.especialista.horaMax);
+          //console.log("hora elegida"+hora);
+          console.log("entro");
+          return null;
+        }else{
+          return{errorHorasMaxMin:true}
+        }
+      }else{
+        return{errorHorasMaxMin:true};
+      }
+    }
   }
   getEspecialidad(){
     this.especialidadesList=[];
