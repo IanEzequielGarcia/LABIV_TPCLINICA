@@ -3,8 +3,29 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@a
 import { FirebaseService } from 'src/app/servicios/firebase.service';
 import { NgModule } from '@angular/core';
 import Swal from 'sweetalert2';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 @Component({
   selector: 'app-registro',
+  animations: [
+    trigger('openClose', [
+      // ...
+      state('open', style({
+        height: '50px',
+        opacity: 0.8,
+      })),
+      state('closed', style({
+        height: '55px',
+        opacity: 1,
+        backgroundColor: 'green'
+      })),
+      transition('open => closed', [
+        animate('1s')
+      ]),
+      transition('closed => open', [
+        animate('0.5s')
+      ]),
+    ]),
+  ],
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.scss']
 })
@@ -227,5 +248,9 @@ export class RegistroComponent implements OnInit {
       (<HTMLInputElement> document.querySelector(".status-text")).style.color = "#ff0000";
       (<HTMLInputElement> document.querySelector(".status-text")).innerText = "ERROR, Reingrese";
     }
+  }
+  btnEnviar = true;
+  toggle() {
+    this.btnEnviar = !this.btnEnviar;
   }
 }

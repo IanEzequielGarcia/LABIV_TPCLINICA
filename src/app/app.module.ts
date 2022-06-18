@@ -23,8 +23,8 @@ import { NavbarComponent } from './componentes/navbar/navbar.component';
 import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar-turno.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
 import { TurnosComponent } from './componentes/turnos/turnos.component';
-import { PerfilModule } from './componentes/perfil/perfil.module';
 import { PerfilRoutingModule } from './componentes/perfil/perfil-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +49,8 @@ import { PerfilRoutingModule } from './componentes/perfil/perfil-routing.module'
     provideFirebaseApp(()=>initializeApp(environment.firebaseConfig)),
     provideStorage(()=>getStorage()),
     NgxCaptchaModule,
-    PerfilRoutingModule
+    PerfilRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {

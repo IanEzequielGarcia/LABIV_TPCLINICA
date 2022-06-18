@@ -8,13 +8,7 @@ import { FirebaseService } from 'src/app/servicios/firebase.service';
   styleUrls: ['./solicitar-turno.component.scss']
 })
 export class SolicitarTurnoComponent implements OnInit {
-    registroTurnoForm = new FormGroup({
-    especialidad : new FormControl('',[Validators.required]),
-    especialista : new FormControl('',[Validators.required]),
-    turno : new FormControl('',[Validators.required]),
-    fecha : new FormControl('',[Validators.required]),
-    hora : new FormControl('',[Validators.required,Validators.minLength(4)]),
-  });
+  pasoSwitch=1;
   turno={
     especialidad:"",
     especialista:"",
@@ -30,6 +24,14 @@ export class SolicitarTurnoComponent implements OnInit {
   pacienteList:any[]=[];
   usuario:any;
   esPaciente=false;
+  especialista:any;
+    registroTurnoForm = new FormGroup({
+    especialidad : new FormControl('',[Validators.required]),
+    especialista : new FormControl('',[Validators.required]),
+    turno : new FormControl('',[Validators.required]),
+    fecha : new FormControl('',[Validators.required]),
+    hora : new FormControl('',[Validators.required,Validators.minLength(4)]),
+  });
   constructor(public firestore:FirebaseService) {
     this.getEspecialistas();
     this.getEspecialidad();
@@ -46,24 +48,37 @@ export class SolicitarTurnoComponent implements OnInit {
     //now.setDate(now.getDate() + numWeeks * 7);
     (document.getElementById('fecha') as HTMLInputElement).max = `${now.getFullYear()}-${now.getMonth()+1}-${now.getUTCDay()+14}`;
     (document.getElementById('fecha') as HTMLInputElement).min = `${now.getFullYear()}-${now.getMonth()+1}-${now.getUTCDay()}`;
-
     console.log(`${now.getFullYear()}-${now.getMonth()+1}-${now.getUTCDay()+14}`);
+  }
+  MaximaHora()
+  {
+    this.getEspecialistas(this.registroTurnoForm.get('especialista')?.value);
+    console.log(this.especialista);
+    //this.registroTurnoForm.get('especialista')?
+
+    (document.getElementById('hora') as HTMLInputElement).value;
+    (document.getElementById('hora') as HTMLInputElement).value;
   }
   getEspecialidad(){
     this.especialidadesList=[];
     this.firestore.getCollection("especialidades").then((data)=>{
       data.forEach((dataAux:any)=>{
         //console.log(dataAux);
-      this.especialidadesList.push(dataAux.data.data);
+      this.especialidadesList.push(dataAux);
     })
   });
   }
-  getEspecialistas(){
+  getEspecialistas(especialistaId?:string){
     this.especialistaList=[];
     this.firestore.getCollection("especialistas").then((data)=>{
       data.forEach((dataAux:any)=>{
-        //console.log(dataAux);
-      this.especialistaList.push(dataAux);
+        console.log(dataAux);
+      if(especialistaId!=undefined&&dataAux.id==especialistaId)
+      {
+        console.log(dataAux);
+        this.especialista=dataAux;
+      }
+        this.especialistaList.push(dataAux);
     })
   });
   }
@@ -115,10 +130,20 @@ export class SolicitarTurnoComponent implements OnInit {
     }
     //this.turno.tipo="turno";
     console.log(this.turno);
-    this.firestore.AñadirColeccion(this.turno,"turnos");
-    //his.firestore.RegisterUser(this.turno.email,this.turno.contrasena);
+    //this.firestore.AñadirColeccion(this.turno,"turnos");
+    
   }
   SeleccionarPaciente(paciente:any){
     this.turno.paciente=paciente;
+  }
+  SeleccionarEspecialistas(data:any){
+    this.registroTurnoForm.get('especialista')?.setValue(data);
+    this.pasoSwitch=3;
+  }
+  SeleccionarEspecialidad(data:any){
+    this.registroTurnoForm.get('especialidad')?.setValue(data);
+    this.pasoSwitch=2;
+    //this.registroTurnoForm.setValue('especialidad',)
+    //this.turno.paciente=data;
   }
 }
