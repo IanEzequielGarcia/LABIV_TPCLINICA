@@ -5,16 +5,26 @@
         <p class="h4 mb-4">Nuevo Turno</p>
         <div class="col-md-7 col-lg-8">
             <div>
-                <div id="pacienteInput" *ngIf="!esPaciente">
-                    Paciente:
-                    <select class="form-control">
-                        <option *ngFor="let paciente of pacienteList" value="{{paciente.id}}"
-                            (click)="SeleccionarPaciente(paciente)">
-                            {{paciente.data.paciente.apellido}} {{paciente.data.paciente.nombre}}
-                        </option>
-                    </select>
-                </div>
+
                 <div [ngSwitch]="pasoSwitch">
+                    <div id="pacienteInput" *ngIf="!esPaciente">
+                        <!--Paciente:
+                        <select class="form-control">
+                            <option *ngFor="let paciente of pacienteList" value="{{paciente.id}}"
+                                (click)="SeleccionarPaciente(paciente)">
+                                {{paciente.data.paciente.apellido}} {{paciente.data.paciente.nombre}}
+                            </option>
+                        </select>-->
+                        Paciente:
+                        <br>
+                        <button *ngFor="let paciente of pacienteList" value="{{paciente.id}}"
+                            (click)="SeleccionarPaciente(paciente.id)"
+                            style="border-radius:50%;">
+                            <div>{{paciente.data.paciente.apellido}} {{paciente.data.paciente.nombre}}</div>
+                            <div *ngIf="paciente.data.paciente.fotoUno!=''"> <img id="fotoPaciente"
+                                    src="{{paciente.data.paciente.fotoUno}}" style="width: 50px; height: 50px;"> </div>
+                        </button>
+                    </div>
                     <div *ngSwitchCase="1">
                         Especialidad:
                         <br>
@@ -25,7 +35,7 @@
                             </option>
                         </select>-->
                         <button *ngFor="let especialidad of especialidadesList" value="{{especialidad.data.data}}"
-                            formControlName="especialidad" (click)="SeleccionarEspecialidad(especialidad.id)"
+                            (click)="SeleccionarEspecialidad(especialidad.id)"
                             style="border-radius:50%">
                             <div *ngIf="especialidad.data.foto!=''"> <img id="fotoEspecialidad"
                                     src="{{especialidad.data.foto}}"> </div>
@@ -37,7 +47,7 @@
                             <option *ngFor="let especialista of especialistaList" value="{{especialista.id}}">
                                 {{especialista.data.especialista.apellido}} {{especialista.data.especialista.nombre}}</option>
                         </select>-->
-                        <div *ngFor="let especialista of especialistaList" formControlName="especialista"
+                        <div *ngFor="let especialista of especialistaList"
                         (click)="SeleccionarEspecialistas(especialista.id)">
                                 <div id="tituloFoto">{{especialista.data.especialista.apellido}} {{especialista.data.especialista.nombre}}</div>
                                 <img class="card-img" src="{{especialista.data.especialista.fotoUno}}" style="border-radius:50%;width:'50px';height: 50px;"  alt="Card image">
@@ -64,7 +74,7 @@
                     </div>
                     <div *ngSwitchCase="4">
                         Horario:
-                        <input type="time" id="hora" class="form-control mb-4" placeholder="Hora" (click)="MaximaHora()"
+                        <input type="time" id="hora" class="form-control mb-4" placeholder="Hora"
                             formControlName="hora">
                         <p class="text-danger"
                             *ngIf="registroTurnoForm.get('hora')?.errors && registroTurnoForm.get('hora')?.touched">hora
@@ -74,10 +84,14 @@
                             *ngIf="registroTurnoForm.errors?.['errorHorasMaxMin']">
                             HORARIOS DE ATENCION DEL ESPECIALISTA: DE {{this.especialista.data.especialista.horaMin}} HASTA {{this.especialista.data.especialista.horaMax}}
                         </p>
+                        <p class="text-danger"
+                        *ngIf="registroTurnoForm.errors?.['turnoSuperpuesto']">
+                            OCUPADO, ELIJA OTRA HORA
+                    </p>
                     </div>
                 </div>
 
-                <button color="info" block="true" class="w-50 btn btn-primary btn-lg" type="submit"
+                <button color="info" block="true" class="w-50 btn btn-primary btn-lg" type="submit" [disabled]="registroTurnoForm.invalid"
                     (click)="AgregarTurno()">Registrarse</button>
             </div>
         </div>

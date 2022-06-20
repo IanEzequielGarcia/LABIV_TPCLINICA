@@ -88,4 +88,7 @@ export class UsuariosComponent implements OnInit {
     this.firestore.añadirAdmin(this.admin);
     this.firestore.RegisterUser(this.admin.email,this.admin.contrasena);
   }
+  DescargarExcel(data:any){
+    
+  }
 }
