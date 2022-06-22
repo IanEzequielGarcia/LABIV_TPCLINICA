@@ -74,10 +74,18 @@
                     <td (click)="AceptarTurno(turno)" *ngIf="turno.data.data.estado==''"><i class="bi bi-journal-check"></i></td>
                     <td (click)="RechazarTurno(turno)" *ngIf="turno.data.data.estado==''"><i class="bi bi-journal-x"></i></td>
                     <td (click)="MostrarResena(turno)" *ngIf="turno.data.data.estado=='finalizado'">Ver Reseña</td>
+                    <td (click)="CargarHistoria(turno)" *ngIf="turno.data.data.estado=='finalizado'">Cargar Historia</td>
                     <td (click)="FinalizarTurno(turno)" *ngIf="turno.data.data.estado=='aceptado'">Finalizar Turno</td>
                 </tr>
             </tbody>
         </table>
+        <div id="inputHistoria" style="display:none;">
+            <input type="text" id="altura" placeholder="altura">
+            <input type="number" id="peso" placeholder="peso">
+            <input type="number" id="temperatura" placeholder="temperatura">
+            <input type="number" id="presion" placeholder="presion">
+            <button (click)="SubirHistoria()">Enviar</button>
+        </div>
     </ng-template>
     
 </body>

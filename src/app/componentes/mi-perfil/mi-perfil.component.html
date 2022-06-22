@@ -135,8 +135,8 @@
                     </div>
                     <div>
                         <h2>Sobre mi</h2>
-                        <p>{{infoPerfil.apellido}} {{infoPerfil.nombre}}</p>
-                        <img src="{{infoPerfil.fotoUno}}" height="100px" width="100px">
+                        <p *ngIf="infoPerfil!=undefined">{{infoPerfil.apellido}} {{infoPerfil.nombre}}</p>
+                        <img *ngIf="infoPerfil!=undefined" src="{{infoPerfil.fotoUno}}" height="100px" width="100px">
                     </div>
                 </div>
                 <div class="col d-flex align-items-start" *ngIf="tipoLogueado=='especialista'; else elseBlock">
@@ -161,6 +161,15 @@
                                 <br>
                                 <button (click)="CargarHoras()">Enviar</button>
                             </form>
+                            <h2>Mis Especialidades</h2>
+                            <input type="text" id="especialidadInput" placeholder="Añadir Especialidad"><button (click)="AgregarEspecialidad()">Agregar</button>
+                            <ul>
+                                <ng-container *ngFor="let especialidades of especialidadesList">
+                                    <li  (click)="EliminarEspecialidad(especialidades)" >
+                                        {{especialidades}} (ELIMINAR)
+                                    </li>
+                                </ng-container>
+                            </ul>
                         </div>
                         <div>
                             <h2>Mis Turnos</h2>
@@ -197,7 +206,6 @@
                         Historia Clinica
                     </h2>
                     <table class="table">
-
                         <thead>
                             <tr>
                                 <th scope="col">Especialidad</th>
@@ -211,7 +219,7 @@
                             <tr>
                             </tr>
                             <tr *ngFor="let turno of turnoList">
-                                <td>{{turno.data.data.especialidad}}</td>
+                                <td (click)="pdfEspecialidad(turno.data.data.especialidad)">{{turno.data.data.especialidad}}</td>
                                 <td>{{turno.data.data.especialista}}</td>
                                 <td>{{turno.data.data.paciente}}</td>
                                 <td>{{turno.data.data.fecha}}</td>

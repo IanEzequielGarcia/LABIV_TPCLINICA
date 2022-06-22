@@ -9,11 +9,13 @@ import Swal from 'sweetalert2';
 })
 export class MisTurnosComponent implements OnInit {
   usuarioLoguado:any;
+  listaTodosPacientes:any[]=[];
   tipoLogueado = "";
   esPaciente = false;
   estadoConsulta="";
   haTerminado=false;
   turnoList:any[]=[];
+  pacienteHistoria:any;
   constructor(private firestore:FirebaseService) {
 
   }
@@ -21,6 +23,26 @@ export class MisTurnosComponent implements OnInit {
   ngOnInit(): void {
     this.GetTipo();
     this.GetTurnos();
+  }
+  GetPacientes(id?:any)
+  {
+    this.firestore.getCollection("pacientes").then((adminsAux)=>{
+      adminsAux.forEach((admins:any)=>{
+        if(id!=undefined)
+        {
+          //console.log(id.data.data.paciente);
+          //console.log(admins.id);
+          if(admins.id==id.data.data.paciente)
+          {
+            console.log(admins);
+            this.pacienteHistoria=admins;
+            //this.listaTodosPacientes.push(admins);
+          }
+        }else{
+          this.listaTodosPacientes.push(admins);
+        }
+      })
+    });
   }
   CancelarTurno(data:any){
     console.log(data);
@@ -155,6 +177,58 @@ export class MisTurnosComponent implements OnInit {
         'error'
       );
     }
+  }
+  CargarHistoria(data:any){
+    document.getElementById("inputHistoria")!.style.display="block";
+    this.GetPacientes(data);
+    //this.pacienteHistoria=data;
+  }
+  SubirHistoria()
+  {
+    let altura=  (<HTMLInputElement>document.getElementById("altura")).value
+    let peso=  (<HTMLInputElement>document.getElementById("peso")).value
+    let temperatura=  (<HTMLInputElement>document.getElementById("temperatura")).value
+    let presion=  (<HTMLInputElement>document.getElementById("presion")).value
+
+    let paciente={
+      id:"",
+      nombre:"",
+      apellido:"",
+      edad:"",
+      dni:"",
+      email:"",
+      contrasena:"",
+      obraSocial:"",
+      fotoUno:"",
+      fotoDos:"",
+      tipo:"paciente",
+      historia:{
+        altura:"",
+        peso:"",
+        temperatura:"",
+        presion:""
+      }
+    }
+    console.log(this.pacienteHistoria);
+
+    paciente.nombre=this.pacienteHistoria.data.paciente.nombre;
+    paciente.apellido=this.pacienteHistoria.data.paciente.apellido;
+    paciente.edad=this.pacienteHistoria.data.paciente.edad;
+    paciente.dni=this.pacienteHistoria.data.paciente.dni;
+    paciente.email=this.pacienteHistoria.data.paciente.email;
+    paciente.contrasena=this.pacienteHistoria.data.paciente.contrasena;
+    paciente.obraSocial=this.pacienteHistoria.data.paciente.obraSocial;
+    paciente.fotoUno=this.pacienteHistoria.data.paciente.fotoUno;
+    paciente.fotoDos=this.pacienteHistoria.data.paciente.email;
+    paciente.tipo=this.pacienteHistoria.data.paciente.tipo;
+
+    paciente.id=this.pacienteHistoria.id;
+    paciente.historia.altura=altura;
+    paciente.historia.peso=peso;
+    paciente.historia.temperatura=temperatura;
+    paciente.historia.presion=presion;
+    //console.log(paciente.nombre);
+    this.firestore.UpdatePaciente(paciente);
   }
   Ordenar(ordenar:string){
     //console.log("aaaa");

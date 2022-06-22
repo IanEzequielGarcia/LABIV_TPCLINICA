@@ -131,7 +131,7 @@ export class RegistroComponent implements OnInit {
     this.especialista.dni=this.registroEspecialistaForm.get('dni')?.value;
     this.especialista.email=this.registroEspecialistaForm.get('email')?.value;
     this.especialista.contrasena=this.registroEspecialistaForm.get('contrasena')?.value;
-    this.especialista.especialidad=this.registroEspecialistaForm.get('especialidad')?.value;
+    this.especialista.especialidad[0]=(this.registroEspecialistaForm.get('especialidad')?.value);
     //this.especialista.tipo="especialista";
     console.log(this.especialista);
     this.firestore.añadirEpecialistas(this.especialista);
@@ -224,7 +224,7 @@ export class RegistroComponent implements OnInit {
     dni:"",
     email:"",
     contrasena:"",
-    especialidad:"",
+    especialidad:[""],
     fotoUno:"",
     tipo:"especialista",
     verificado:false,

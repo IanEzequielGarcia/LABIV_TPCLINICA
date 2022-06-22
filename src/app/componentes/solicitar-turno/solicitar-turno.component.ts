@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidationErrors, AbstractControl, ValidatorFn } from '@angular/forms';
 import { time } from 'console';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-solicitar-turno',
@@ -128,27 +129,55 @@ export class SolicitarTurnoComponent implements OnInit {
     })
   });
   }
-  getEspecialidad(){
+  getEspecialidad(especialidadId?:string){
     this.especialidadesList=[];
     this.firestore.getCollection("especialidades").then((data)=>{
       data.forEach((dataAux:any)=>{
-        //console.log(dataAux);
-      this.especialidadesList.push(dataAux);
+        console.log(especialidadId);
+        if(especialidadId!=undefined)
+        {
+          if(especialidadId==dataAux.id)
+          {
+            this.getEspecialistas(undefined,dataAux.data.data);
+            this.especialidadesList.push(dataAux);
+            console.log(this.especialidadesList[0].data.data);
+          }
+        }else{
+          this.especialidadesList.push(dataAux);
+        }
     })
   });
   }
-  getEspecialistas(especialistaId?:string){
+  getEspecialistas(especialistaId?:string,especialidad?:string){
     this.especialistaList=[];
+    let especialidadesAux=[];
+    console.log(especialidad);
     this.firestore.getCollection("especialistas").then((data)=>{
       data.forEach((dataAux:any)=>{
         //console.log(dataAux);
-      if(especialistaId!=undefined&&dataAux.id==especialistaId)
+      if(especialidad!=undefined)
       {
-        console.log(dataAux);
-        this.especialista=dataAux;
-
+        console.log(especialidad);
+        for(let especialidadAux of dataAux.data.especialista.especialidad)
+        {
+          console.log(especialidadAux);
+          console.log(especialidad);
+          if(especialidadAux==especialidad)
+          {
+            this.especialistaList.push(dataAux);
+          }
+        }
       }
+      else if(especialistaId!=undefined)
+      {
+        if(dataAux.id==especialistaId)
+        {
+          console.log(dataAux);
+          this.especialista=dataAux;
+        }
+      }else{
         this.especialistaList.push(dataAux);
+      }
     })
   });
   }
@@ -203,7 +232,11 @@ export class SolicitarTurnoComponent implements OnInit {
     //this.turno.tipo="turno";
     console.log(this.turno);
     this.firestore.AñadirColeccion(this.turno,"turnos");
-    
+    Swal.fire(
+      'Exito!',
+      'Turno añadido correctamente',
+      'success'
+    );
   }
   SeleccionarPaciente(paciente:any){
     //this.registroTurnoForm.get('paciente')?.setValue(paciente);
@@ -218,8 +251,13 @@ export class SolicitarTurnoComponent implements OnInit {
     this.pasoSwitch=3;
   }
   SeleccionarEspecialidad(data:any){
-    this.registroTurnoForm.get('especialidad')?.setValue(data);
+    this.registroTurnoForm.get('especialidad')?.setValue(data.data.data);
     this.pasoSwitch=2;
+    console.log(data);
+    console.log(data.id);
+    this.getEspecialidad(data.id);
+    console.log(this.especialidadesList[0]);
+    //this.getEspecialistas(this.especialidadesList[0].data.data);
     //this.registroTurnoForm.setValue('especialidad',)
     //this.turno.paciente=data;
   }

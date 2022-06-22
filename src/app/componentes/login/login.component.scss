@@ -10,3 +10,39 @@
 html{
     overflow: hidden;
 }
+.slide-right {
+	-webkit-animation: slide-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: slide-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+ @-webkit-keyframes slide-right {
+    0% {
+      -webkit-transform: translateX(0);
+              transform: translateX(0);
+    }
+    100% {
+      -webkit-transform: translateX(100px);
+              transform: translateX(100px);
+    }
+  }
+  @keyframes slide-right {
+    0% {
+      -webkit-transform: translateX(0);
+              transform: translateX(0);
+    }
+    100% {
+      -webkit-transform: translateX(100px);
+              transform: translateX(100px);
+    }
+  }
+#ambulancia{
+    width: 60%;
+    margin: auto;
+    display: block;
+    justify-content: center;
+    z-index: 9;
+    height: 300px;
+    width: 500px;
+    position: absolute;
+    top: 50%;
+    left: 35%;
+}

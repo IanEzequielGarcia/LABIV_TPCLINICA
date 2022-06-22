@@ -18,12 +18,12 @@ export class AdminGuardGuard implements CanActivate, CanDeactivate<unknown> {
           let user = await this.firestore.InfoUsuario();
           let esAdmin = false;
           pacientesAux.forEach(async (paciente:any)=>{
-          console.log(paciente.data.admin);
+          //console.log(paciente.data.admin);
           //console.log(paciente.data.admin.email);
-          console.log(user?.email);
+          //console.log(user?.email);
           if(paciente.data.admin.email.toLowerCase()==user?.email)
           {
-            console.log("entro");
+            //console.log("entro");
             esAdmin=true;
           }
         }

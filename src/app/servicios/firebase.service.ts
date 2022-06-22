@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { addDoc, collection, getFirestore,getDoc,getDocs,doc,updateDoc, deleteDoc   } from 'firebase/firestore';
+import { addDoc, collection, getFirestore,getDoc,getDocs,doc,updateDoc, deleteDoc,arrayUnion, arrayRemove   } from 'firebase/firestore';
 import { environment } from 'src/environments/environment';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL  } from "firebase/storage";
 import {AngularFireAuth} from '@angular/fire/compat/auth';
@@ -58,6 +58,29 @@ export class FirebaseService {
     });
     return data;
   }
+  async UpdatePaciente(data:any){
+    const washingtonRef = doc(this.db,"pacientes",data.id);
+    await updateDoc(washingtonRef,{
+      paciente:{
+        "nombre":data.nombre,
+        "apellido":data.apellido,
+        "edad":data.edad,
+        "dni":data.dni,
+        "email":data.email,
+        "contrasena":data.contrasena,
+        "obraSocial":data.obraSocial,
+        "fotoUno":data.fotoUno,
+        "fotoDos":data.fotoDos,
+        "tipo":"paciente",
+        "historia":{
+          "altura":data.historia.altura,
+          "peso":data.historia.peso,
+          "temperatura":data.historia.temperatura,
+          "presion":data.historia.presion,
+        }
+      }
+    });
+  }
   async UpdateTurno(data:any){
     const washingtonRef = doc(this.db,"turnos",data.id);
     await updateDoc(washingtonRef, {
@@ -71,6 +94,26 @@ export class FirebaseService {
         "calificacion": data.data.data.calificacion,
         "resena":data.data.data.resena},
     });
+  }
+  async ActualizarEspecialidadArray(data:any,id:string)
+  {
+    const washingtonRef = doc(this.db,"especialistas",id);
+    await updateDoc(washingtonRef, {
+      especialista:{
+        "apellido":data.apellido,
+        "contrasena": data.contrasena,
+        "dni": data.dni,
+        "edad": data.edad,
+        "email": data.email,
+        "especialidad": data.especialidad,
+        "fotoUno": data.fotoUno,
+        "nombre": data.nombre,
+        "tipo": data.tipo,
+        "verificado":data.verificado,
+        "horaMin":data.horaMin,
+        "horaMax":data.horaMax,
+      },
+  });
   }
   async VerificarEspecialista(collection:string,data:any,id:string){
     const washingtonRef = doc(this.db,collection,id);

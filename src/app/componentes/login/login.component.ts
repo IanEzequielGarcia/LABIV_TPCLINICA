@@ -1,14 +1,26 @@
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  animations: [
+    trigger("myAnimationTrigger", [
+      state('shown', style({
+        transform: 'translateY(0%)'})
+      ), state('hidden', style({
+        transform: 'translateY(100%)', display:'none', opacity: 0})
+      ),
+    ])
+  ]
 })
 export class LoginComponent implements OnInit {
+  state = 'shown';
   loginForm = new FormGroup({
     email : new FormControl('',[Validators.required,Validators.minLength(4),Validators.email]),
     contrasena : new FormControl('',[Validators.required,Validators.minLength(4)]),
@@ -19,6 +31,11 @@ export class LoginComponent implements OnInit {
   constructor(private firestore:FirebaseService,public routing:Router) { }
 
   ngOnInit(): void {
+  }
+  ngAfterViewInit() {
+    setTimeout( () => {
+      this.state = 'hidden';
+    }, 1000);
   }
   AccesoRapido(){
     this.loginForm.controls['email'].setValue('JuanPerez@hotmail.com');
@@ -46,10 +63,18 @@ export class LoginComponent implements OnInit {
               this.firestore.enviarVerificacion();
               console.log(usuario?.user?.emailVerified);
               this.firestore.LogOut();
-              alert("verifique su mail");
+              Swal.fire(
+                'ATENCION!',
+                'Verifique su mail',
+                'info'
+              );
             }else{
               console.log(usuario?.user?.emailVerified);
-              alert("Logueado con exito");
+              Swal.fire(
+                'Exito!',
+                'Logueado correctamente',
+                'success'
+              );
             }
           });
         }
@@ -65,17 +90,29 @@ export class LoginComponent implements OnInit {
             if(usuario?.user?.emailVerified && paciente.data.especialista.verificado)
             {
               console.log(usuario?.user?.emailVerified);
-              alert("Logueado con exito");
+              Swal.fire(
+                'Exito!',
+                'Logueado correctamente',
+                'success'
+              );
 
             }else if(paciente.data.especialista.verificado==false ||paciente.data.especialista.verificado=="false" ){
               console.log(usuario?.user?.emailVerified);
               this.firestore.LogOut();
-              alert("Su cuenta no ha sido verificada por un admin");
+              Swal.fire(
+                'ERROR!',
+                'Su cuenta no ha sido verificada por un admin',
+                'question'
+              );
             }
             else{
               console.log(usuario?.user?.emailVerified);
               this.firestore.LogOut();
-              alert("verifique su mail");
+              Swal.fire(
+                'ATENCION!',
+                'Verifique su mail',
+                'info'
+              );
             }
           });
         }
@@ -87,7 +124,11 @@ export class LoginComponent implements OnInit {
         if(this.email==paciente.data.admin.email)
         {
           this.firestore.SignIn(this.email,this.contrasena).then((usuario)=>{
-            alert("Logueado con exito, ADMIN");
+            Swal.fire(
+              'Exito!',
+              'Logueado correctamente, ADMIN',
+              'success'
+            );
           })
         }
       })

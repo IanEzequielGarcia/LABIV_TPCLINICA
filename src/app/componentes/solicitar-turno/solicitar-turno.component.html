@@ -34,11 +34,16 @@
                             <option *ngFor="let especialidad of especialidadesList" value="{{especialidad}}">{{especialidad}}
                             </option>
                         </select>-->
-                        <button *ngFor="let especialidad of especialidadesList" value="{{especialidad.data.data}}"
-                            (click)="SeleccionarEspecialidad(especialidad.id)"
+                        <button *ngFor="let especialidad of especialidadesList" value="{{especialidad.id}}"
+                            (click)="SeleccionarEspecialidad(especialidad)"
                             style="border-radius:50%">
-                            <div *ngIf="especialidad.data.foto!=''"> <img id="fotoEspecialidad"
-                                    src="{{especialidad.data.foto}}"> </div>
+                            <div *ngIf="especialidad.data.foto!=''&& especialidad.data.foto!=undefined; else elseFoto"> <img id="fotoEspecialidad" src="{{especialidad.data.foto}}"> 
+                            </div>
+                            <ng-template #elseFoto>
+                                <div>
+                                    {{especialidad.data.data}}
+                                </div>
+                            </ng-template>
                         </button>
                     </div>
                     <div *ngSwitchCase="2">

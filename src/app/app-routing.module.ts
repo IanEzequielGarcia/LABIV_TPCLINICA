@@ -7,6 +7,7 @@ import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar
 import { TurnosComponent } from './componentes/turnos/turnos.component';
 import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
 import { AdminGuardGuard } from './guards/admin-guard.guard';
+import { EspecialistaGuardGuard } from './guards/especialista-guard.guard';
 
 const routes: Routes = [
   {
@@ -35,7 +36,7 @@ const routes: Routes = [
   },
   {
     path: 'usuarios',
-    component:UsuariosComponent,canActivate:[AdminGuardGuard]
+    component:UsuariosComponent,canActivate:[EspecialistaGuardGuard]
     //loadChildren: () => import('./juegos/ahorcado/ahorcado.component').then(m => m.AhorcadoComponent)
   },
   {
