@@ -83,17 +83,41 @@ export class FirebaseService {
   }
   async UpdateTurno(data:any){
     const washingtonRef = doc(this.db,"turnos",data.id);
-    await updateDoc(washingtonRef, {
-      data:{
-        "especialista":data.data.data.especialista,
-        "paciente": data.data.data.paciente,
-        "fecha": data.data.data.fecha,
-        "hora": data.data.data.hora,
-        "especialidad": data.data.data.especialidad,
-        "estado": data.data.data.estado,
-        "calificacion": data.data.data.calificacion,
-        "resena":data.data.data.resena},
-    });
+    if(data.historia==undefined||data.historia.altura==undefined)
+    {
+      await updateDoc(washingtonRef, {
+        data:{
+          "especialista":data.data.data.especialista,
+          "paciente": data.data.data.paciente,
+          "fecha": data.data.data.fecha,
+          "hora": data.data.data.hora,
+          "especialidad": data.data.data.especialidad,
+          "estado": data.data.data.estado,
+          "calificacion": data.data.data.calificacion,
+          "resena":data.data.data.resena,
+        }
+      });
+    }else{
+      await updateDoc(washingtonRef, {
+        data:{
+          "especialista":data.especialista,
+          "paciente": data.paciente,
+          "fecha": data.fecha,
+          "hora": data.hora,
+          "especialidad": data.especialidad,
+          "estado": data.estado,
+          "calificacion": data.calificacion,
+          "resena":data.resena,
+          "historia":{
+            "altura":data.historia.altura,
+            "peso":data.historia.peso,
+            "temperatura":data.historia.temperatura,
+            "presion":data.historia.presion,
+          }
+        }
+      });
+    }
+
   }
   async ActualizarEspecialidadArray(data:any,id:string)
   {
@@ -142,6 +166,12 @@ export class FirebaseService {
   }
   async SignIn(email:string, password:string)
   {
+    let fecha = new Date();
+    addDoc(collection(this.db,"logger"), {
+      email: email,
+      fecha: `${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}`,
+      hora:`${fecha.getHours()}:${fecha.getMinutes()}`
+    });
     return this.auth.signInWithEmailAndPassword(email, password);
 }
   isLoggedIn() {

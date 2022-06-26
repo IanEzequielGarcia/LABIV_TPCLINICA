@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-
+import { PipeFiltroPipe } from 'src/app/pipes/pipe-filtro.pipe';
 @Component({
   selector: 'app-mi-perfil',
   templateUrl: './mi-perfil.component.html',
@@ -17,6 +17,8 @@ export class MiPerfilComponent implements OnInit {
   especialidadesList:any[]=[];
   pacientesList:any[]=[];
   especialistasList:any[]=[];
+  filtroString:string="";
+
   horaForm = new FormGroup({
     horaMin : new FormControl('',[Validators.required]),
     horaMax : new FormControl('',[Validators.required]),
@@ -147,9 +149,9 @@ export class MiPerfilComponent implements OnInit {
             }
           }
         }else if(this.tipoLogueado=="paciente"){
-          console.log(this.infoUsuario.id);
-          console.log(paciente.data.data.paciente);
-          console.log(paciente.data.data.estado);
+          //console.log(this.infoUsuario.id);
+          //console.log(paciente.data.data.paciente);
+          //console.log(paciente.data.data.estado);
           if(this.infoUsuario.id==paciente.data.data.paciente&&paciente.data.data.estado=="finalizado")
           {
             for (const pacienteAux of this.pacientesList) {
@@ -186,7 +188,6 @@ export class MiPerfilComponent implements OnInit {
     
   }
   async AlertaHistorial(data:any){
-
   }
   async AgregarEspecialidad(){
     let encontrado:boolean=false;
@@ -256,13 +257,20 @@ export class MiPerfilComponent implements OnInit {
     doc.setTextColor(100);
 
     var data:any[]=[];
-    var head:any[]=[["ESPECIALIDAD","ESPECIALISTA","PACIENTE","FECHA"]]
+    var head:any[]=[["ESPECIALIDAD","ESPECIALISTA","PACIENTE","FECHA","ALTURA","PESO","PRESION","TEMPERATURA"]]
     this.turnoList.forEach(e=>{
       var tempObj =[];
       tempObj.push(e.data.data.especialidad);
       tempObj.push(e.data.data.especialista);
       tempObj.push(e.data.data.paciente);
       tempObj.push(e.data.data.fecha);
+      if(e.data.data.historia!=undefined)
+      {
+        tempObj.push(e.data.data.historia.altura);
+        tempObj.push(e.data.data.historia.peso);
+        tempObj.push(e.data.data.historia.presion);
+        tempObj.push(e.data.data.historia.temperatura);
+      }
       data.push(tempObj);
     });
     (doc as any).autoTable({

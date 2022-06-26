@@ -180,7 +180,8 @@ export class MisTurnosComponent implements OnInit {
   }
   CargarHistoria(data:any){
     document.getElementById("inputHistoria")!.style.display="block";
-    this.GetPacientes(data);
+    this.GetTurnos(data);
+    //this.GetPacientes(data);
     //this.pacienteHistoria=data;
   }
   SubirHistoria()
@@ -189,8 +190,26 @@ export class MisTurnosComponent implements OnInit {
     let peso=  (<HTMLInputElement>document.getElementById("peso")).value
     let temperatura=  (<HTMLInputElement>document.getElementById("temperatura")).value
     let presion=  (<HTMLInputElement>document.getElementById("presion")).value
+    this.turnoList
+    let turno={
+      id:"",
+      especialista:"",
+      paciente: "",
+      fecha: "",
+      hora: "",
+      especialidad: "",
+      estado: "",
+      calificacion: "",
+      resena:"",
+      historia:{
+        altura:"",
+        peso:"",
+        temperatura:"",
+        presion:"",
+      }
+  }
 
-    let paciente={
+    /*let paciente={
       id:"",
       nombre:"",
       apellido:"",
@@ -208,27 +227,31 @@ export class MisTurnosComponent implements OnInit {
         temperatura:"",
         presion:""
       }
-    }
-    console.log(this.pacienteHistoria);
+    }*/
+    //console.log(this.pacienteHistoria.data.data);
 
-    paciente.nombre=this.pacienteHistoria.data.paciente.nombre;
-    paciente.apellido=this.pacienteHistoria.data.paciente.apellido;
-    paciente.edad=this.pacienteHistoria.data.paciente.edad;
-    paciente.dni=this.pacienteHistoria.data.paciente.dni;
-    paciente.email=this.pacienteHistoria.data.paciente.email;
-    paciente.contrasena=this.pacienteHistoria.data.paciente.contrasena;
-    paciente.obraSocial=this.pacienteHistoria.data.paciente.obraSocial;
-    paciente.fotoUno=this.pacienteHistoria.data.paciente.fotoUno;
-    paciente.fotoDos=this.pacienteHistoria.data.paciente.email;
-    paciente.tipo=this.pacienteHistoria.data.paciente.tipo;
+    turno.especialista=this.pacienteHistoria.data.data.especialista;
+    turno.paciente=this.pacienteHistoria.data.data.paciente;
+    turno.calificacion=this.pacienteHistoria.data.data.calificacion;
+    turno.especialidad=this.pacienteHistoria.data.data.especialidad;
+    turno.estado=this.pacienteHistoria.data.data.estado;
+    turno.fecha=this.pacienteHistoria.data.data.fecha;
+    turno.hora=this.pacienteHistoria.data.data.hora;
+    turno.resena=this.pacienteHistoria.data.data.resena;
 
-    paciente.id=this.pacienteHistoria.id;
-    paciente.historia.altura=altura;
-    paciente.historia.peso=peso;
-    paciente.historia.temperatura=temperatura;
-    paciente.historia.presion=presion;
+    turno.id=this.pacienteHistoria.id;
+    turno.historia.altura=altura;
+    turno.historia.peso=peso;
+    turno.historia.temperatura=temperatura;
+    turno.historia.presion=presion;
     //console.log(paciente.nombre);
-    this.firestore.UpdatePaciente(paciente);
+    //console.log(turno);
+    this.firestore.UpdateTurno(turno);
+    Swal.fire(
+      'Exito!',
+      'Historia añadida correctamente',
+      'success'
+    );
   }
   Ordenar(ordenar:string){
     //console.log("aaaa");
@@ -263,10 +286,21 @@ export class MisTurnosComponent implements OnInit {
       return 0;
     });
   }
-  GetTurnos(){
+  GetTurnos(idPaciente?:any){
     this.turnoList = [];
     this.firestore.getCollection("turnos").then(async (pacientesAux)=>{
       pacientesAux.forEach((paciente:any)=>{
+        if(idPaciente!=undefined)
+        {
+          //console.log(paciente);
+          //console.log(idPaciente);
+          if(paciente.id==idPaciente.id)
+          {
+            this.pacienteHistoria=idPaciente;
+            //console.log("aaa");
+            console.log(this.pacienteHistoria);
+          }
+        }
         if(!this.esPaciente)
         {
           if(this.usuarioLoguado.id==paciente.data.data.especialista)
@@ -305,7 +339,6 @@ export class MisTurnosComponent implements OnInit {
           this.turnoList.push(paciente);
           console.log(paciente);
         }
-        
       })
     })
   }

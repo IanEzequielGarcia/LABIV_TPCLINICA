@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BienvenidaComponent } from './componentes/bienvenida/bienvenida.component';
+import { InformesComponent } from './componentes/informes/informes.component';
 import { LoginComponent } from './componentes/login/login.component';
 import { RegistroComponent } from './componentes/registro/registro.component';
 import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar-turno.component';
@@ -47,6 +48,11 @@ const routes: Routes = [
   {
     path: 'turnos',
     component:TurnosComponent,canActivate:[AdminGuardGuard]
+    //loadChildren: () => import('./juegos/ahorcado/ahorcado.component').then(m => m.AhorcadoComponent)
+  },
+  {
+    path: 'informes',
+    component:InformesComponent,canActivate:[AdminGuardGuard]
     //loadChildren: () => import('./juegos/ahorcado/ahorcado.component').then(m => m.AhorcadoComponent)
   },
   {

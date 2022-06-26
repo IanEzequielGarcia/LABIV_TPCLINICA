@@ -29,6 +29,9 @@
         <li class="nav-item" *ngIf="!(estaLogueado|async)">
             <a routerLink="/login" class="nav-link menu-item">Login</a>
         </li>
+      <li class="nav-item" *ngIf="!(estaLogueado|async)">
+        <a routerLink="/login" class="nav-link menu-item">Login</a>
+      </li>
         <li class="nav-item" *ngIf="estaLogueado|async as User">
             <p (click)="logOut()" class="nav-link menu-item" style="cursor: pointer">LogOut</p>
         </li>

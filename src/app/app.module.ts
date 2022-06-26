@@ -25,6 +25,8 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 import { TurnosComponent } from './componentes/turnos/turnos.component';
 import { PerfilRoutingModule } from './componentes/perfil/perfil-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InformesComponent } from './componentes/informes/informes.component';
+import { NgChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +38,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     UsuariosComponent,
     NavbarComponent,
     SolicitarTurnoComponent,
-    TurnosComponent
+    TurnosComponent,
+    InformesComponent,
   ],
   imports: [
     CommonModule,
@@ -50,7 +53,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     provideStorage(()=>getStorage()),
     NgxCaptchaModule,
     PerfilRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgChartsModule
   ],
   providers: [
     {

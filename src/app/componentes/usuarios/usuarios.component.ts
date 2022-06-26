@@ -164,14 +164,14 @@ export class UsuariosComponent implements OnInit {
     this.firestore.RegisterUser(this.admin.email,this.admin.contrasena);
   }
   DescargarExcelTodos(){
-        //getting data from our table
-        var data_type = 'data:application/vnd.ms-excel';
-        var table_div = document.getElementById('table_with_data');
-        var table_html = table_div!.outerHTML.replace(/ /g, '%20');
-        var a = document.createElement('a');
-        a.href = data_type + ', ' + table_html;
-        a.download = 'Pacientes.xls';
-        a.click();
+    //getting data from our table
+    var data_type = 'data:application/vnd.ms-excel';
+    var table_div = document.getElementById('table_with_data');
+    var table_html = table_div!.outerHTML.replace(/ /g, '%20');
+    var a = document.createElement('a');
+    a.href = data_type + ', ' + table_html;
+    a.download = 'Pacientes.xls';
+    a.click();
   }
   DescargarExcel(paciente:any){
     this.listaTurnosPdf=[];
