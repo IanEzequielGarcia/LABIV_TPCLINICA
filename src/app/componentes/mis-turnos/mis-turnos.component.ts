@@ -112,7 +112,7 @@ export class MisTurnosComponent implements OnInit {
           //let foo = prompt('Cuentenos porque cancela su turno');
           data.data.data.calificacion=result.value;
           //data.data.data.estado="finalizado";
-          console.log(result.value);
+          //console.log(result.value);
           this.firestore.UpdateTurno(data);
           this.GetTurnos();
         }
@@ -298,7 +298,7 @@ export class MisTurnosComponent implements OnInit {
           {
             this.pacienteHistoria=idPaciente;
             //console.log("aaa");
-            console.log(this.pacienteHistoria);
+            //console.log(this.pacienteHistoria);
           }
         }
         if(!this.esPaciente)
@@ -307,7 +307,7 @@ export class MisTurnosComponent implements OnInit {
           {
             this.estadoConsulta=paciente.data.data.estado;
             this.turnoList.push(paciente);
-            console.log(paciente);
+            //console.log(paciente);
           }
         }else if(this.esPaciente&&this.usuarioLoguado.id==paciente.data.data.paciente){
           this.estadoConsulta=paciente.data.data.estado;

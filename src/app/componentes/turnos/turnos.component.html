@@ -34,7 +34,7 @@
             </tr>
             <tr *ngFor="let turno of turnoList">
                 <td (click)="FiltrarEspecialidad(turno)">{{turno.data.data.especialidad}}</td>
-                <td (click)="FiltrarEspecialista(turno)">{{turno.data.data.especialista}}</td>
+                <td (click)="FiltrarEspecialista(turno)">{{turno.data.data.especialista | especialistaPipe}}</td>
                 <td>{{turno.data.data.fecha}}</td>
                 <td *ngIf="turno.data.data.estado=='';else elseTurno">En Espera</td>
                 <ng-template #elseTurno>

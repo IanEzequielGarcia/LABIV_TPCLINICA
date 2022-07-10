@@ -27,6 +27,8 @@ import { PerfilRoutingModule } from './componentes/perfil/perfil-routing.module'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InformesComponent } from './componentes/informes/informes.component';
 import { NgChartsModule } from 'ng2-charts';
+import { PerfilModule } from './componentes/perfil/perfil.module';
+import { OscurecerFondoDirective } from './directives/oscurecer-fondo.directive';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +42,7 @@ import { NgChartsModule } from 'ng2-charts';
     SolicitarTurnoComponent,
     TurnosComponent,
     InformesComponent,
+    OscurecerFondoDirective
   ],
   imports: [
     CommonModule,
@@ -54,7 +57,8 @@ import { NgChartsModule } from 'ng2-charts';
     NgxCaptchaModule,
     PerfilRoutingModule,
     BrowserAnimationsModule,
-    NgChartsModule
+    NgChartsModule,
+    PerfilModule,
   ],
   providers: [
     {

@@ -12,5 +12,4 @@ export class SpinnerService {
   esconder(){
     this.estaCargando.next(false);
   }
-  constructor() { }
 }

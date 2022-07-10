@@ -11,6 +11,7 @@
     <title>Dashboard Template for Bootstrap</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/dashboard/">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -31,29 +32,22 @@
                     </div>
                 </div>
                 <div>
+                    <div style="width:700px;height:700px;">
+                        <div class="chart" >
+                            <canvas baseChart [data]="pieChartDataEspecialista" type="pie"></canvas>
+                        </div>
+                    </div>
                     <div>
-                        <div class="chart" style="width:700px;height:700px;">
-                            <div>
-                                <div>
-                                    <div class="chart">
-                                        <canvas baseChart [data]="pieChartData" [type]="pieChartType"
-                                            [options]="pieChartOptions">
-                                        </canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="button-row">
-                                <button color="primary" (click)="toggleLegend()">Toggle
-                                    Legend</button>
-                                <button  color="primary" (click)="changeLabels()">Change
-                                    Labels</button>
-                                <button  color="primary" (click)="addSlice()">Add
-                                    Slice</button>
-                                <button  color="primary" (click)="removeSlice()">Remove
-                                    Slice</button>
-                                <button  color="primary"
-                                    (click)="changeLegendPosition()">Change Legend Position</button>
-                            </div>
+                        <div class="chart" >
+                            <canvas baseChart [data]="lineChartDataDia" type="pie"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <!--<div class="chart">
+                            <canvas baseChart [data]="barChartDataEspecialidad" type="bar"></canvas>
+                        </div>-->
+                        <div class="chart">
+                            <canvas baseChart [data]="barChartDataEspecialidad" type="line"></canvas>
                         </div>
                     </div>
                 </div>

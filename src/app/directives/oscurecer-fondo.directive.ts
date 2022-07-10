@@ -1,27 +1,27 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[setNoche]'
+  selector: '[appOscurecerFondo]'
 })
-export class ElementoNocheDirective {
+export class OscurecerFondoDirective {
 
   constructor(private element : ElementRef) 
   { 
-    element.nativeElement.style.color="#000000";
+    element.nativeElement.style.backgroundColor="#FFFFFF";
   }
 
   cambiarColor(color:string)
   {
-    this.element.nativeElement.style.color = color;
+    this.element.nativeElement.style.backgroundColor = color;
   }
 
   @HostListener('mouseenter') onMouseEnter() 
   {
-    this.cambiarColor('#ff0000');
+    this.cambiarColor('#DDDDDD');
   }
   
   @HostListener('mouseleave') onMouseLeave() 
   {
-    this.cambiarColor("#000000");
+    this.cambiarColor("#FFFFFF");
   }
 }

@@ -18,7 +18,6 @@ export class MiPerfilComponent implements OnInit {
   pacientesList:any[]=[];
   especialistasList:any[]=[];
   filtroString:string="";
-
   horaForm = new FormGroup({
     horaMin : new FormControl('',[Validators.required]),
     horaMax : new FormControl('',[Validators.required]),
@@ -120,22 +119,6 @@ export class MiPerfilComponent implements OnInit {
           this.GetEspecialidadesList();
           if(this.infoUsuario.id==paciente.data.data.especialista)
           {
-            for (const pacienteAux of this.pacientesList) {
-              if(pacienteAux.id==paciente.data.data.paciente)
-              {
-                //paciente.data.data.especialista = this.infoUsuario.data.especialista.nombre+" "+this.infoUsuario.data.especialista.apellido
-                paciente.data.data.paciente=pacienteAux.data.paciente.nombre+" "+pacienteAux.data.paciente.apellido;
-                break;
-              }
-            }
-            for (const especialistaAux of this.especialistasList) {
-              if(especialistaAux.id==paciente.data.data.especialista)
-              {
-                paciente.data.data.especialista = especialistaAux.data.especialista.nombre+" "+especialistaAux.data.especialista.apellido
-                //paciente.data.data.paciente=pacienteAux.data.paciente.nombre+" "+pacienteAux.data.paciente.apellido;
-                break;
-              }
-            }
             if(turnoPdf!=undefined)
             {
               console.log(turnoPdf);
@@ -154,22 +137,6 @@ export class MiPerfilComponent implements OnInit {
           //console.log(paciente.data.data.estado);
           if(this.infoUsuario.id==paciente.data.data.paciente&&paciente.data.data.estado=="finalizado")
           {
-            for (const pacienteAux of this.pacientesList) {
-              if(pacienteAux.id==paciente.data.data.paciente)
-              {
-                //paciente.data.data.especialista = this.infoUsuario.data.especialista.nombre+" "+this.infoUsuario.data.especialista.apellido
-                paciente.data.data.paciente=pacienteAux.data.paciente.nombre+" "+pacienteAux.data.paciente.apellido;
-                break;
-              }
-            }
-            for (const especialistaAux of this.especialistasList) {
-              if(especialistaAux.id==paciente.data.data.especialista)
-              {
-                paciente.data.data.especialista = especialistaAux.data.especialista.nombre+" "+especialistaAux.data.especialista.apellido
-                //paciente.data.data.paciente=pacienteAux.data.paciente.nombre+" "+pacienteAux.data.paciente.apellido;
-                break;
-              }
-            }
             this.turnoList.push(paciente);
             console.log(paciente);
           }

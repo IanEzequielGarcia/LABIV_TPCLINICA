@@ -11,8 +11,14 @@ import { getAuth } from "firebase/auth";
 export class FirebaseService {
   app = initializeApp(environment.firebaseConfig);
   db = getFirestore(this.app);
-  
-  constructor(public auth: AngularFireAuth,) {}
+  coleccionTurnos:any[]=[];
+  coleccionPacientes:any[]=[];
+  coleccionEspecialistas:any[]=[];
+  coleccionAdmins:any[]=[];
+
+  constructor(public auth: AngularFireAuth,) {
+    this.getDocsCollection();
+  }
   async BorrarDatoColeccion(coleccion:string,id:string){
     await deleteDoc(doc(this.db,coleccion,id));
   }
@@ -57,6 +63,29 @@ export class FirebaseService {
       data.push({data:doc.data(),id:doc.id});
     });
     return data;
+  }
+  public async getDocsCollection(){
+    this.coleccionEspecialistas=[];
+    this.coleccionPacientes=[];
+    this.coleccionTurnos=[];
+    this.coleccionAdmins=[];
+
+    const docSnap = await getDocs(collection(this.db, "turnos"))
+    docSnap.forEach((doc) => {
+      this.coleccionTurnos.push({data:doc.data(),id:doc.id});
+    });
+    const docSnap2 = await getDocs(collection(this.db, "especialistas"))
+    docSnap2.forEach((doc) => {
+      this.coleccionEspecialistas.push({data:doc.data(),id:doc.id});
+    });
+    const docSnap3 = await getDocs(collection(this.db, "pacientes"))
+    docSnap3.forEach((doc) => {
+      this.coleccionPacientes.push({data:doc.data(),id:doc.id});
+    });
+    const docSnap4 = await getDocs(collection(this.db, "admins"))
+    docSnap4.forEach((doc) => {
+      this.coleccionAdmins.push({data:doc.data(),id:doc.id});
+    });
   }
   async UpdatePaciente(data:any){
     const washingtonRef = doc(this.db,"pacientes",data.id);
