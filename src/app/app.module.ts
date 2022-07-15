@@ -14,10 +14,9 @@ import { provideFirebaseApp } from '@angular/fire/app';
 import { AngularFireModule } from '@angular/fire/compat';
 import { SpinnerComponent } from './componentes/spinner/spinner.component';
 import { CommonModule } from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SpinnerInterceptor } from './shared/spinner.interceptor';
-import { RegistroEspecialistaComponent } from './componentes/registro-especialista/registro-especialista.component';
 import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
 import { NavbarComponent } from './componentes/navbar/navbar.component';
 import { SolicitarTurnoComponent } from './componentes/solicitar-turno/solicitar-turno.component';
@@ -29,6 +28,14 @@ import { InformesComponent } from './componentes/informes/informes.component';
 import { NgChartsModule } from 'ng2-charts';
 import { PerfilModule } from './componentes/perfil/perfil.module';
 import { OscurecerFondoDirective } from './directives/oscurecer-fondo.directive';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { EncuestaComponent } from './componentes/encuesta/encuesta.component';
+
+export function HttpTranslateLoader(http: HttpClient){
+  return new TranslateHttpLoader(http)
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,13 +43,13 @@ import { OscurecerFondoDirective } from './directives/oscurecer-fondo.directive'
     LoginComponent,
     RegistroComponent,
     SpinnerComponent,
-    RegistroEspecialistaComponent,
     UsuariosComponent,
     NavbarComponent,
     SolicitarTurnoComponent,
     TurnosComponent,
     InformesComponent,
-    OscurecerFondoDirective
+    OscurecerFondoDirective,
+    EncuestaComponent
   ],
   imports: [
     CommonModule,
@@ -59,6 +66,13 @@ import { OscurecerFondoDirective } from './directives/oscurecer-fondo.directive'
     BrowserAnimationsModule,
     NgChartsModule,
     PerfilModule,
+    TranslateModule.forRoot({  
+      loader: {  
+        provide: TranslateLoader,  
+        useFactory: HttpTranslateLoader,  
+        deps: [HttpClient]  
+        }  
+      })  
   ],
   providers: [
     {

@@ -1,21 +1,63 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Chart, ChartConfiguration, ChartData, ChartDataset, ChartEvent, ChartItem,ChartType,registerables } from 'chart.js';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { EspecialistaPipePipe } from 'src/app/pipes/especialista-pipe.pipe';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { trigger, state, style } from '@angular/animations';
 Chart.register(...registerables);
 @Component({
   selector: 'app-informes',
   templateUrl: './informes.component.html',
-  styleUrls: ['./informes.component.scss']
+  styleUrls: ['./informes.component.scss'],
+  animations: [
+    trigger("myAnimationTrigger", [
+      state('shown', style({
+        transform: 'translateY(0%)'})
+      ), state('hidden', style({
+        transform: '', display:'none', opacity: 0})
+      ),
+    ])
+  ]
 })
 export class InformesComponent implements OnInit {
+  state = 'shown';
+  ngAfterViewInit() {
+    setTimeout( () => {
+    this.state = 'hidden';
+    }, 500);
+  }
+
   listaLogger:any[]=[];
   listaTurnos:any[]=[];
   label:string[]=[];
   labelArray:string[][]=[];
   datos:number[]=[];
-  constructor(private firestore:FirebaseService) { }
+
+  formaFechasFinalizado:FormGroup;
+  fechaInicioTurnosFinalizado:Date = new Date();
+  fechaFinalTurnosFinalizados:Date = new Date();
+  
+  formaFechasSolicitado:FormGroup;
+  fechaInicioTurnosSolicitado:Date = new Date();
+  fechaFinalTurnosSolicitado:Date = new Date();
+
+  @ViewChild('informe', {static: true}) element!: ElementRef<HTMLImageElement>;
+  @ViewChild('informe2', {static: true}) element2!: ElementRef<HTMLImageElement>;
+
+
+  constructor(private firestore:FirebaseService,private fb:FormBuilder) {
+    this.formaFechasSolicitado = this.fb.group({
+      'fechaInicio':['',[Validators.required,]],
+      'fechaFinal':['',[Validators.required,]],
+    })
+    this.formaFechasFinalizado = this.fb.group({
+      'fechaInicio':['',[Validators.required,]],
+      'fechaFinal':['',[Validators.required,]],
+    })
+    }
   ngOnInit(): void {
     this.GetLogs();
     this.GetTurnos();
@@ -61,7 +103,7 @@ export class InformesComponent implements OnInit {
         let i=0;
         for(let valor of labels)
         {
-          console.log(valor);
+          //console.log(valor);
           if(turno.data.data.especialidad == valor)
           {
             if(datos[i]==undefined)
@@ -126,8 +168,8 @@ export class InformesComponent implements OnInit {
         i++;
       }
     });
-    console.log(labels);
-    console.log(datos);
+    //console.log(labels);
+    //console.log(datos);
     setTimeout(()=>{
       this.lineChartDataDia.labels=[];
       this.lineChartDataDia.datasets[0].data=[];
@@ -235,6 +277,12 @@ export class InformesComponent implements OnInit {
     datasets: [ {data: []} ]
   };
 
+  @ViewChild(BaseChartDirective) chartEspecialistaFinalizado: BaseChartDirective | undefined;
+  public pieChartDataEspecialistaFinalizado: ChartData<'pie', number[], string | string[]> = {
+    labels: [],
+    datasets: [ {data: []} ]
+  };
+
   @ViewChild(BaseChartDirective) chartEspecialidad: BaseChartDirective | undefined;
   public barChartDataEspecialidad: ChartData<'bar', number[], string | string[]> = {
     labels: [],
@@ -247,6 +295,7 @@ export class InformesComponent implements OnInit {
     datasets: [ {data: []} ]
   };
 
+
   DescargarExcelLogs(){
     //getting data from our table
     var data_type = 'data:application/vnd.ms-excel';
@@ -258,4 +307,221 @@ export class InformesComponent implements OnInit {
     a.click();
   }
 
+  turnosRealizadosTemp(fechaInicio:Date,fechaFinal:Date){
+
+    let retorno = false;
+
+    let auxTurnos = this.listaTurnos;
+
+    let auxTurnosFiltradosxFechas = auxTurnos.filter(turno=>{
+      let auxFechaTurnoActual = new Date(turno.data.data.fecha);
+      fechaFinal.setHours(23);
+      fechaFinal.setMinutes(59);
+      fechaFinal.setSeconds(59);
+      return auxFechaTurnoActual>=fechaInicio && auxFechaTurnoActual<=fechaFinal&&turno.data.data.estado=="finalizado";
+    })
+
+    let listaEspecialistasTurno = auxTurnosFiltradosxFechas.map(value=>{
+      return {especialista:`${value.data.data.especialista}`,cantidad:0} ;
+    })
+
+    var arrayConEspecialistasUnicos = listaEspecialistasTurno
+    
+    var hash :any = {};
+    arrayConEspecialistasUnicos = arrayConEspecialistasUnicos.filter(current=>{
+      var exists = hash[current.especialista?current.especialista:''] = true;
+      return exists;
+    });
+
+    let newArrayconCantidadesSinDuplicados =  arrayConEspecialistasUnicos
+
+    //RECORRO TODOS LOS TURNOS Y VOY COMPARANDO POR LOS ESPECIALISTAS YA FILTRADOS
+    auxTurnosFiltradosxFechas.forEach(turnoAuxiliar=>{
+      newArrayconCantidadesSinDuplicados.forEach(especialstaSinRepetir=>{
+
+        if(turnoAuxiliar.data.data.especialista === especialstaSinRepetir.especialista){
+          especialstaSinRepetir.cantidad++
+        }
+      })
+    })
+
+    this.pieChartDataEspecialistaFinalizado.labels=[];
+    this.pieChartDataEspecialistaFinalizado.datasets[0].data=[];
+
+    newArrayconCantidadesSinDuplicados.forEach(value=>{
+      this.firestore.getCollection("especialistas").then((especialistas)=>{
+        especialistas.forEach((especialistasAux:any)=>{
+
+          let especialista= especialistasAux.data.especialista.nombre+" "+especialistasAux.data.especialista.apellido;
+          if(value.especialista==especialistasAux.id)
+          {
+            value.especialista=especialista;
+            console.log(value);
+          }
+        })
+        this.pieChartDataEspecialistaFinalizado.labels?.push(`${value.especialista}(${value.cantidad})`);
+        this.pieChartDataEspecialistaFinalizado.datasets[0].data.push(value.cantidad);
+        this.chartEspecialistaFinalizado?.update();
+      })
+    })
+    return retorno
+  }
+
+  turnosSolicitadosTemp(fechaInicio:Date,fechaFinal:Date){
+
+    let auxTurnos = this.listaTurnos
+
+    console.log('Todos los turnos:')
+    console.log(auxTurnos)
+
+    
+    let auxTurnosFiltradosxFechas = auxTurnos.filter(turno=>{
+      let auxFechaTurnoActual = new Date(turno.data.data.fecha)
+      // console.log("fecha actual", auxFechaTurnoActual)
+      // console.log("fecha final", fechaFinal)
+      fechaFinal.setHours(23)
+      fechaFinal.setMinutes(59)
+      fechaFinal.setSeconds(59)
+      return auxFechaTurnoActual>=fechaInicio && auxFechaTurnoActual<=fechaFinal
+    })
+
+
+    let listaEspecialistasTurno = auxTurnosFiltradosxFechas.map(value=>{
+    
+      return {especialista:`${value.data.data.especialista}`,cantidad:0} 
+    })
+
+    // console.log('turnos fechas indicadas')
+    // console.log(listaEspecialistasTurno)
+
+
+    var arrayConEspecialistasUnicos = listaEspecialistasTurno
+    
+    var hash :any = {};
+    arrayConEspecialistasUnicos = arrayConEspecialistasUnicos.filter(current=>{
+      var exists = !hash[current.especialista?current.especialista:''];
+      hash[current.especialista?current.especialista:''] = true;
+      return exists;
+    });
+    
+
+    let newArrayconCantidadesSinDuplicados =  arrayConEspecialistasUnicos
+
+    auxTurnosFiltradosxFechas.forEach(turnoAuxiliar=>{
+      newArrayconCantidadesSinDuplicados.forEach(especialstaSinRepetir=>{
+
+        if(turnoAuxiliar.data.data.especialista === especialstaSinRepetir.especialista){
+          especialstaSinRepetir.cantidad++
+        }
+      })
+    })
+
+    this.pieChartDataEspecialista.labels=[];
+    this.pieChartDataEspecialista.datasets[0].data=[];
+
+    newArrayconCantidadesSinDuplicados.forEach(value=>{
+      this.firestore.getCollection("especialistas").then((especialistas)=>{
+        especialistas.forEach((especialistasAux:any)=>{
+
+          let especialista= especialistasAux.data.especialista.nombre+" "+especialistasAux.data.especialista.apellido;
+          if(value.especialista==especialistasAux.id)
+          {
+            value.especialista=especialista;
+            console.log(value);
+          }
+        })
+        this.pieChartDataEspecialista.labels?.push(`${value.especialista}(${value.cantidad})`);
+        this.pieChartDataEspecialista.datasets[0].data.push(value.cantidad);
+        this.chartEspecialista?.update();
+      })
+    })
+
+
+    //this.dataLabel4 = auxLabelsTurnosSolicitados
+    //this.serie4=auxValuesTurnosSolicitados
+
+    //this.turnosSolicitadosTempGrafico()
+
+    return true
+  }
+
+  seleccionarFechas(){
+    let newFechaInicio = new Date(this.formaFechasSolicitado.value.fechaInicio)
+    let newFechaFinal = new Date(this.formaFechasSolicitado.value.fechaFinal)
+  
+    this.fechaInicioTurnosSolicitado=newFechaInicio
+    this.fechaFinalTurnosSolicitado=newFechaFinal
+
+    let rtaCargarGrafico =this.turnosSolicitadosTemp(newFechaInicio,newFechaFinal)
+    
+    if(rtaCargarGrafico){
+      //this.showFechasTurnoSolicitados = false
+      //this.especialistaSelected = new Especialista()
+    }
+  }
+  seleccionarFechasTurnoFinalizado(){
+
+    let newFechaInicio = new Date(this.formaFechasFinalizado.value.fechaInicio)
+    let newFechaFinal = new Date(this.formaFechasFinalizado.value.fechaFinal)
+  
+    this.fechaInicioTurnosFinalizado=newFechaInicio
+    this.fechaFinalTurnosFinalizados=newFechaFinal
+    
+    let rtaCargarGrafico =  this.turnosRealizadosTemp(newFechaInicio,newFechaFinal)
+    //this.showFechasTurnoFinalizado = false
+
+    //this.hayDatosTurnoFinalizado = rtaCargarGrafico
+  }
+  generatePDF() { 
+    document.getElementById("formFechaSolicitado")!.style.display="none";
+    document.getElementById("formFechaFinalizado")!.style.display="none";
+
+    html2canvas(this.element.nativeElement).then((canvas)=>{
+      const imgData = canvas.toDataURL('image/jpeg');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+      });
+      const imageProps = pdf.getImageProperties(imgData);
+      console.log(imageProps.height);
+      const pdfw = pdf.internal.pageSize.getWidth();
+      const pdfh = (imageProps.height* pdfw)/ imageProps.width;
+      console.log(pdfw);
+      console.log(pdfh);
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfw, pdfh);
+      pdf.output('dataurlnewwindow');
+    })
+    let pdf2 = new jsPDF('p','pt','a4');
+    pdf2.html(this.element.nativeElement,{
+      callback:(pdf)=>{
+        pdf.save(`grafico.pdf`);
+      }
+    })
+    
+    document.getElementById("formFechaSolicitado")!.style.display="block";
+    document.getElementById("formFechaFinalizado")!.style.display="block";
+  }
+  generatePDF2() { 
+    /*html2canvas(this.element2.nativeElement).then((canvas)=>{
+      const imgData = canvas.toDataURL('image/jpeg');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+      });
+      const imageProps = pdf.getImageProperties(imgData);
+      console.log(imageProps.height);
+      const pdfw = pdf.internal.pageSize.getWidth();
+      const pdfh = (imageProps.height* pdfw)/ imageProps.width;
+      console.log(pdfw);
+      console.log(pdfh);
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfw, pdfh);
+      pdf.output('dataurlnewwindow');
+    })*/
+    let pdf = new jsPDF('p','pt','a4');
+    pdf.html(this.element2.nativeElement,{
+      callback:(pdf)=>{
+        pdf.save(`grafico3.pdf`);
+      }
+    })
+  } 
 }

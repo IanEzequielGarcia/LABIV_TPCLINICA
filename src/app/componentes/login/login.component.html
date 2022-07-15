@@ -11,8 +11,8 @@
 <body>
   <img [@myAnimationTrigger]="state" class="slide-right" id="ambulancia"
     src="https://pngimg.com/uploads/ambulance/ambulance_PNG99442.png">
-  <section class="vh-100 gradient-custom">
-    <div class="container py-5 h-100">
+  <section class="vh-100 gradient-custom" *ngIf="state=='hidden'">
+    <div class="container py-5 h-100" >
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
           <div class="card bg-dark text-white" style="border-radius: 1rem;">

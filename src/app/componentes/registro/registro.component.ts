@@ -25,6 +25,13 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
         animate('0.5s')
       ]),
     ]),
+    trigger("myAnimationTrigger", [
+      state('shown', style({
+        transform: 'translateY(0%)'})
+      ), state('hidden', style({
+        transform: '', display:'none', opacity: 0})
+      ),
+    ])
   ],
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.scss']
@@ -32,6 +39,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 export class RegistroComponent implements OnInit {
   siteKey="6LdyH0ggAAAAAJ_b3FbfmaifgFbU-sjevqMez2Kp";
   pacienteForm=true;
+
   registroPacienteForm = new FormGroup({
     nombre : new FormControl('',[Validators.required]),
     apellido : new FormControl('',[Validators.required]),
@@ -44,6 +52,12 @@ export class RegistroComponent implements OnInit {
     fotoDos : new FormControl('',[Validators.required]),
     recaptcha : new FormControl('',[Validators.required]),
   });
+  state = 'shown';
+  ngAfterViewInit() {
+    setTimeout( () => {
+    this.state = 'hidden';
+    }, 500);
+  }
   paciente={
     nombre:"",
     apellido:"",

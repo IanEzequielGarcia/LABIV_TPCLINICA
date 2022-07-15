@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<p [@myAnimationTrigger]="state" class="tracking-in-expand" >REGISTRO</p>
+
+<body *ngIf="state=='hidden'">
     <div id="formFotosDiv" style="text-align:center;"> 
         <img class="card-img-top flip-vertical-right"  (click)="pacienteForm=true" style="border-radius:50%; width: 250px; height: 250px;" src="https://images01.nicepage.com/a1389d7bc73adea1e1c1fb7e/9d8102178c5e5d878ec5f3f0/1773337_medium2000.jpg" alt="Registrar Especialista">
         <img class="card-img-top flip-vertical-right"  (click)="pacienteForm=false;CargarCaptcha()" style="border-radius:50%; width: 250px; height: 250px;"src="https://images01.nicepage.com/a1389d7bc73adea1e1c1fb7e/1bed0f8034fe5d17a6891c42/2302047_medium2000.jpg" alt="Registrar Paciente">

@@ -1,0 +1,54 @@
+{
+    "miPerfil":{
+        "titulo":"Mi Perfil",
+        "sobreMi":"Sobre Mi",
+        "misHorarios":"Mis Horarios",
+        "misHorarios.desde":"Desde",
+        "misHorarios.hasta":"Hasta",
+        "misTurnos":"Mis Turnos",
+        "misEspecialidades":"Mis Especialidades",
+        "misEspecialidades.placeholder":"Añadir especialidad",
+        "historiaClinica":"Historia Clinica",
+        "eliminar":"eliminar",
+        "pdf":"a PDF",
+        "grilla":{
+            "especialidad":"especialidad",
+            "especialista":"especialista",
+            "paciente":"paciente",
+            "fecha":"fecha",
+            "altura":"altura",
+            "peso":"peso",
+            "presion":"presion",
+            "temperatura":"temperatura"
+        }
+    },
+    "misTurnos":{
+        "especialidad":"especialidad",
+        "paciente":"paciente",
+        "fecha":"fecha",
+        "estado":"estado",
+        "acciones":"acciones",
+        "resena":"reseña",
+        "espera":"espera",
+        "cancelar":"cancelar",
+        "historia":"historia",
+        "turno":"turno",
+        "altura":"altura",
+        "peso":"peso",
+        "temperatura":"temperatura",
+        "presion":"presion"
+    },
+    "usuarios":{
+        "especialista":"especialista",
+        "especialidad":"especialidad",
+        "paciente":"paciente",
+        "fecha":"fecha",
+        "excel":"descargar excel",
+        "nombre":"nombre",
+        "apellido":"apellido",
+        "obraSocial":"obra social",
+        "edad":"edad",
+        "contraseña":"contraseña",
+        "registrarse":"registrarse"
+    }
+}

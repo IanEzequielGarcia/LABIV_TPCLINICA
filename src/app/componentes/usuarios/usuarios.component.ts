@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import jsPDF from 'jspdf';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
 
@@ -41,9 +42,15 @@ export class UsuariosComponent implements OnInit {
     contrasena : new FormControl('',[Validators.required,Validators.minLength(4)]),
     fotoUno : new FormControl('',[Validators.required]),
   });
-  constructor(public firestore:FirebaseService) {
+  constructor(public firestore:FirebaseService,
+              public translate:TranslateService) {
     this.GetTipo();
     this.getUsuarios();
+    translate.addLangs(['en', 'es','pr']);  
+    translate.setDefaultLang('es');  
+  }
+  cambiarLenguaje(lenguaje:string){
+    this.translate.use(lenguaje);
   }
   infoUsuario:any;
   tipoLogueado:string="";

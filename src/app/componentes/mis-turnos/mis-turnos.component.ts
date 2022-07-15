@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
 import Swal from 'sweetalert2';
 //import Swal from 'sweetalert2/dist/sweetalert2.js'
@@ -16,10 +17,14 @@ export class MisTurnosComponent implements OnInit {
   haTerminado=false;
   turnoList:any[]=[];
   pacienteHistoria:any;
-  constructor(private firestore:FirebaseService) {
-
+  constructor(private firestore:FirebaseService,
+              public translate:TranslateService) {
+    translate.addLangs(['en', 'es','pr']);  
+    translate.setDefaultLang('es');  
   }
-
+  cambiarLenguaje(lenguaje:string){
+    this.translate.use(lenguaje);
+  }
   ngOnInit(): void {
     this.GetTipo();
     this.GetTurnos();

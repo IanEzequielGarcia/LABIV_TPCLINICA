@@ -10,9 +10,14 @@ import { ElementoNocheDirective } from 'src/app/directives/elemento-noche.direct
 import { EspecialistaPipePipe } from 'src/app/pipes/especialista-pipe.pipe';
 import { PacientePipePipe } from 'src/app/pipes/paciente-pipe.pipe';
 import { BotonGorditoDirective } from 'src/app/directives/boton-gordito.directive';
+import { HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 
-
+export function HttpTranslateLoader(http: HttpClient){
+  return new TranslateHttpLoader(http)
+}
 @NgModule({
   declarations: [MisTurnosComponent,MiPerfilComponent,PipeFiltroPipe,ElementoNocheDirective,EspecialistaPipePipe,PacientePipePipe,BotonGorditoDirective],
   imports: [
@@ -20,6 +25,13 @@ import { BotonGorditoDirective } from 'src/app/directives/boton-gordito.directiv
     PerfilRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    TranslateModule.forRoot({  
+      loader: {  
+        provide: TranslateLoader,  
+        useFactory: HttpTranslateLoader,  
+        deps: [HttpClient]  
+        }  
+      })  
   ],
   exports:[EspecialistaPipePipe,PacientePipePipe,PipeFiltroPipe]
 })

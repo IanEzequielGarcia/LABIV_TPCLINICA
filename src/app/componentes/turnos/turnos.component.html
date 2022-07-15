@@ -19,7 +19,9 @@
 </head>
 
 <body>
-    <table class="table">
+    <img [@myAnimationTrigger]="state" class="flicker-in-1" src="https://www.transparentpng.com/thumb/red-cross/BG0JF1-hong-kong-red-cross-hospital-schools-picture.png" style="z-index: 9;height: 500px; width: 500px; position: absolute;">
+
+    <table class="table" *ngIf="state=='hidden'">
         <thead>
             <tr>
                 <th scope="col" (click)="Ordenar('especialidad')">Especialidad</th>

@@ -20,14 +20,17 @@
 </head>
 
 <body>
+    <div>
+        <p (click)="cambiarLenguaje('en')">EN</p><p (click)="cambiarLenguaje('es')">ES</p><p (click)="cambiarLenguaje('pr')">PR</p>
+    </div>
     <table class="table" *ngIf='esPaciente; else elseBlock'>
         <thead>
             <tr>
-                <th scope="col" (click)="Ordenar('especialidad')">Especialidad</th>
-                <th scope="col" (click)="Ordenar('especialista')">Especialista</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Acciones</th>
+                <th scope="col" (click)="Ordenar('especialidad')">{{"misTurnos.especialidad"|translate}}</th>
+                <th scope="col" (click)="Ordenar('especialista')">{{"misTurnos.especialista"|translate}}</th>
+                <th scope="col">{{"misTurnos.fecha"|translate}}</th>
+                <th scope="col">{{"misTurnos.estado"|translate}}</th>
+                <th scope="col">{{"misTurnos.acciones"|translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -52,11 +55,11 @@
         <table class="table"#elseBlock id="elseBlock">
             <thead>
                 <tr>
-                    <th scope="col" (click)="Ordenar('especialidad')">Especialidad</th>
-                    <th scope="col" (click)="Ordenar('paciente')">Paciente</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Acciones</th>
+                    <th scope="col" (click)="Ordenar('especialidad')">{{"misTurnos.especialidad"|translate}}</th>
+                    <th scope="col" (click)="Ordenar('paciente')">{{"misTurnos.paciente"|translate}}</th>
+                    <th scope="col">{{"misTurnos.fecha"|translate}}</th>
+                    <th scope="col">{{"misTurnos.estado"|translate}}</th>
+                    <th scope="col">{{"misTurnos.acciones"|translate}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,24 +69,91 @@
                     <td>{{turno.data.data.especialidad}}</td>
                     <td>{{turno.data.data.paciente | pacientePipe}}</td>
                     <td>{{turno.data.data.fecha}}</td>
-                    <td *ngIf="turno.data.data.estado=='';else elseTurno">En Espera</td>
+                    <td *ngIf="turno.data.data.estado=='';else elseTurno">{{"misTurnos.espera"|translate}}</td>
                     <ng-template #elseTurno>
                         <td>{{turno.data.data.estado}}</td>
                     </ng-template>
-                    <td (click)="CancelarTurno(turno)" *ngIf="turno.data.data.estado!='finalizado'&&turno.data.data.estado!='cancelado'">Cancelar</td>
+                    <td (click)="CancelarTurno(turno)" *ngIf="turno.data.data.estado!='finalizado'&&turno.data.data.estado!='cancelado'">{{"misTurnos.cancelar"|translate}}</td>
                     <td (click)="AceptarTurno(turno)" *ngIf="turno.data.data.estado==''"><i class="bi bi-journal-check"></i></td>
                     <td (click)="RechazarTurno(turno)" *ngIf="turno.data.data.estado==''"><i class="bi bi-journal-x"></i></td>
-                    <td (click)="MostrarResena(turno)" *ngIf="turno.data.data.estado=='finalizado'">Ver Reseña</td>
-                    <td (click)="CargarHistoria(turno)" *ngIf="turno.data.data.estado=='finalizado'">Cargar Historia</td>
-                    <td (click)="FinalizarTurno(turno)" *ngIf="turno.data.data.estado=='aceptado'">Finalizar Turno</td>
+                    <td (click)="MostrarResena(turno)" *ngIf="turno.data.data.estado=='finalizado'">{{"misTurnos.resena"|translate}}</td>
+                    <td (click)="CargarHistoria(turno)" *ngIf="turno.data.data.estado=='finalizado'">{{"misTurnos.historia"|translate}}</td>
+                    <td (click)="FinalizarTurno(turno)" *ngIf="turno.data.data.estado=='aceptado'">{{"misTurnos.turno"|translate}}</td>
                 </tr>
             </tbody>
         </table>
         <div id="inputHistoria" style="display:none;">
-            <input type="text" id="altura" placeholder="altura">
-            <input type="number" id="peso" placeholder="peso">
-            <input type="number" id="temperatura" placeholder="temperatura">
-            <input type="number" id="presion" placeholder="presion">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">{{"misTurnos.altura"|translate}}</span>
+                </div>
+                <input type="text"   class="form-control" id="altura">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">{{"misTurnos.peso"|translate}}</span>
+                </div>
+                <input type="number" class="form-control" id="peso" >
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">{{"misTurnos.temperatura"|translate}}</span>
+                </div>
+                <input type="number" class="form-control" id="temperatura" >
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">{{"misTurnos.presion"|translate}}</span>
+                </div>
+                <input type="number" class="form-control" id="presion" >
+            </div>
+            <br>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="">Clave y valor custom</span>
+                </div>
+                <input type="text" id="clave1"  class="form-control" placeholder="clave"> 
+                <input type="text" id="valor1"  class="form-control" placeholder="valor">   
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="">Clave y valor custom</span>
+                </div>
+                <input type="text" id="clave2"  class="form-control" placeholder="clave"> 
+                <input type="text" id="valor2"  class="form-control" placeholder="valor"> 
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="">Clave y valor custom</span>
+                </div>
+                <input type="text" id="clave3"  class="form-control" placeholder="clave"> 
+                <input type="text" id="valor3"  class="form-control" placeholder="valor"> 
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="">Clave y valor custom</span>
+                </div>
+                <input type="text" id="clave3"  class="form-control" placeholder="clave"> 
+                <input type="text" id="valor3"  class="form-control" placeholder="valor"> 
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="">Clave y valor custom</span>
+                </div>
+                <input type="text" id="clave4"  class="form-control" placeholder="clave"> 
+                <input type="range" class="form-range" min="0" max="10" id="valor4">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="">Clave y valor custom</span>
+                </div>
+                <input type="text" id="clave5"  class="form-control" placeholder="clave"> 
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="valor5">
+                    <label class="custom-control-label" for="valor5">Si/No</label>
+                </div>
+            </div>
+            <br>
             <button (click)="SubirHistoria()">Enviar</button>
         </div>
     </ng-template>

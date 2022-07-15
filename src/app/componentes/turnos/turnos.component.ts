@@ -1,3 +1,4 @@
+import { trigger, state, style } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
 import Swal from 'sweetalert2';
@@ -5,10 +6,25 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-turnos',
   templateUrl: './turnos.component.html',
-  styleUrls: ['./turnos.component.scss']
+  styleUrls: ['./turnos.component.scss'],
+  animations: [
+    trigger("myAnimationTrigger", [
+      state('shown', style({
+        transform: 'translateY(0%)'})
+      ), state('hidden', style({
+        transform: '', display:'none', opacity: 0})
+      ),
+    ])
+  ]
 })
 export class TurnosComponent implements OnInit {
-
+  state = 'shown';
+  ngAfterViewInit() {
+    setTimeout( () => {
+    this.state = 'hidden';
+    }, 600);
+  }
+  
   usuarioLoguado:any;
   tipoLogueado = "";
   esPaciente = false;

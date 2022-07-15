@@ -4,10 +4,21 @@ import { FirebaseService } from 'src/app/servicios/firebase.service';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { PipeFiltroPipe } from 'src/app/pipes/pipe-filtro.pipe';
+import { trigger, state, style } from '@angular/animations';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-mi-perfil',
   templateUrl: './mi-perfil.component.html',
-  styleUrls: ['./mi-perfil.component.scss']
+  styleUrls: ['./mi-perfil.component.scss'],
+  animations: [
+    trigger("myAnimationTrigger", [
+      state('shown', style({
+        transform: 'translateY(0%)'})
+      ), state('hidden', style({
+        transform: '', display:'none', opacity: 0})
+      ),
+    ])
+  ]
 })
 export class MiPerfilComponent implements OnInit {
   tipoLogueado:string="";
@@ -24,13 +35,25 @@ export class MiPerfilComponent implements OnInit {
   });
   turnoList:any[] = [];
   todasEspecialidadesList:any[]=[];
-  constructor(private firestore:FirebaseService) {
+
+  state = 'shown';
+  ngAfterViewInit() {
+    setTimeout( () => {
+    this.state = 'hidden';
+    }, 500);
+  }
+  constructor(private firestore:FirebaseService,
+    public translate:TranslateService) {
     this.GetTipo();
     this.GetTurnos();
     this.GetEspecialidades();
     this.GetEspecialidadesList();
+    translate.addLangs(['en', 'es','pr']);  
+    translate.setDefaultLang('es');  
   }
-
+  cambiarLenguaje(lenguaje:string){
+    this.translate.use(lenguaje);
+  }
   ngOnInit(): void {
   }
   getEspecialistas(id?:string){

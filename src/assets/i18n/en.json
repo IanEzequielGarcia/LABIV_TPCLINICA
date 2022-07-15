@@ -1,0 +1,54 @@
+{
+    "miPerfil":{
+        "titulo":"My Profile",
+        "sobreMi":"About Me",
+        "misHorarios":"My schedules",
+        "misHorarios.desde":"From",
+        "misHorarios.hasta":"Until",
+        "misTurnos":"My shifts",
+        "misEspecialidades":"My specialties",
+        "misEspecialidades.placeholder":"Add speciality",
+        "historiaClinica":"medical history",
+        "eliminar":"delete",
+        "pdf":"to PDF",
+        "grilla":{
+            "especialidad":"speciality",
+            "especialista":"specialist",
+            "paciente":"patient",
+            "fecha":"date",
+            "altura":"height",
+            "peso":"weight",
+            "presion":"pressure",
+            "temperatura":"temperature"
+        }
+    },
+    "misTurnos":{
+        "especialidad":"specialty",
+        "paciente":"patient",
+        "fecha":"date",
+        "estado":"status",
+        "acciones":"actions",
+        "resena":"review",
+        "espera":"Waiting",
+        "cancelar":"cancel",
+        "historia":"history",
+        "turno":"turn",
+        "altura":"height",
+        "peso":"weight",
+        "temperatura":"temperature",
+        "presion":"pressure"
+    },
+    "usuarios":{
+        "especialista":"specialist",
+        "especialidad":"specialty",
+        "paciente":"patient",
+        "fecha":"date",
+        "excel":"download excel",
+        "nombre":"name",
+        "apellido":"last name",
+        "obraSocial":"social security",
+        "edad":"age",
+        "contraseña":"password",
+        "registrarse":"register"
+    }
+}
