@@ -1,1 +1,89 @@
-<p>encuesta works!</p>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <title>Checkout example for Bootstrap</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/checkout/">
+
+  </head>
+
+  <body class="bg-light">
+
+    <div class="container">
+      <div class="row">
+        
+        <div class="col-md-8 order-md-1">
+          <h4 class="mb-3">Encuesta</h4>
+          <form class="needs-validation" novalidate>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName">Notas</label>
+                <input type="text" class="form-control" id="notas" placeholder="" value="" required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label>Puntue al servicio de ambulancia</label>
+              <br>
+              <div class="stars">
+                <form action="">
+                  <input class="star star-5" id="star-5" type="radio" name="star"/>
+                  <label class="star star-5" for="star-5"></label>
+                  <input class="star star-4" id="star-4" type="radio" name="star"/>
+                  <label class="star star-4" for="star-4"></label>
+                  <input class="star star-3" id="star-3" type="radio" name="star"/>
+                  <label class="star star-3" for="star-3"></label>
+                  <input class="star star-2" id="star-2" type="radio" name="star"/>
+                  <label class="star star-2" for="star-2"></label>
+                  <input class="star star-1" id="star-1" type="radio" name="star"/>
+                  <label class="star star-1" for="star-1"></label>
+                </form>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="rapidez">Puntue la rapidez de su turno ({{valorRapidez}})</label>
+              <input type="range" id="rapidez" min="1" max="10" value="5" (input)="ValorRapidez($event.target)">
+            </div>
+
+
+            <div class="custom-control custom-checkbox">
+              <label class="custom-control-label" for="aprobado">Aprueba su atencion en la clinica?</label>
+              <label class="custom-control-label" for="aprobado" style="margin-left: 1em;">Si</label>
+              <input type="checkbox" class="custom-control-input" id="aprobado" >
+            </div>
+
+            <h4 class="mb-3">Califique al personal</h4>
+            <div class="d-block my-3">
+              <div class="custom-control custom-radio">
+                <input id="atencionMala" name="atencion" type="radio" class="custom-control-input" required>
+                <label class="custom-control-label" for="atencionMala">Mala</label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input id="atencionMedia" name="atencion" type="radio" class="custom-control-input" required>
+                <label class="custom-control-label" for="atencionMedia">Media</label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input id="atencionExcelente" name="atencion" type="radio" class="custom-control-input" checked required>
+                <label class="custom-control-label" for="atencionExcelente">Excelente</label>
+              </div>
+            </div>
+            <hr class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit" (click)="EnviarEncuesta()">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
 import { NgModule } from '@angular/core';
@@ -40,23 +40,28 @@ export class RegistroComponent implements OnInit {
   siteKey="6LdyH0ggAAAAAJ_b3FbfmaifgFbU-sjevqMez2Kp";
   pacienteForm=true;
 
-  registroPacienteForm = new FormGroup({
-    nombre : new FormControl('',[Validators.required]),
-    apellido : new FormControl('',[Validators.required]),
-    edad : new FormControl('',[Validators.required]),
-    dni : new FormControl('',[Validators.required,Validators.minLength(4)]),
-    email : new FormControl('',[Validators.required,Validators.minLength(4),Validators.email]),
-    contrasena : new FormControl('',[Validators.required,Validators.minLength(4)]),
-    obraSocial : new FormControl('',[Validators.required]),
-    fotoUno : new FormControl('',[Validators.required]),
-    fotoDos : new FormControl('',[Validators.required]),
-    recaptcha : new FormControl('',[Validators.required]),
-  });
+  registroPacienteForm : FormGroup;
+  registroEspecialistaForm : FormGroup;
+
   state = 'shown';
   ngAfterViewInit() {
     setTimeout( () => {
     this.state = 'hidden';
     }, 500);
+  }
+  especialista={
+    nombre:"",
+    apellido:"",
+    edad:"",
+    dni:"",
+    email:"",
+    contrasena:"",
+    especialidad:[""],
+    fotoUno:"",
+    tipo:"especialista",
+    verificado:false,
+    horaMin:"",
+    horaMax:"",
   }
   paciente={
     nombre:"",
@@ -78,7 +83,30 @@ export class RegistroComponent implements OnInit {
   {
     return this.registroPacienteForm.get('fotoDos');
   }
-  constructor(public firestore:FirebaseService,) {
+  constructor(public firestore:FirebaseService,private fb :FormBuilder) {
+    this.registroPacienteForm = this.fb.group({
+      nombre : new FormControl('',[Validators.required]),
+      apellido : new FormControl('',[Validators.required]),
+      edad : new FormControl('',[Validators.required]),
+      dni : new FormControl('',[Validators.required,Validators.minLength(4)]),
+      email : new FormControl('',[Validators.required,Validators.minLength(4),Validators.email]),
+      contrasena : new FormControl('',[Validators.required,Validators.minLength(4)]),
+      obraSocial : new FormControl('',[Validators.required]),
+      fotoUno : new FormControl('',[Validators.required]),
+      fotoDos : new FormControl('',[Validators.required]),
+      recaptcha : new FormControl('',[Validators.required]),
+    });
+    this.registroEspecialistaForm = this.fb.group({
+      nombre : new FormControl('',[Validators.required]),
+      apellido : new FormControl('',[Validators.required]),
+      edad : new FormControl('',[Validators.required]),
+      dni : new FormControl('',[Validators.required,Validators.minLength(4)]),
+      email : new FormControl('',[Validators.required,Validators.minLength(4),Validators.email]),
+      contrasena : new FormControl('',[Validators.required,Validators.minLength(4)]),
+      especialidad : new FormControl('',[Validators.required]),
+      fotoUno : new FormControl('',[Validators.required]),
+      captcha : new FormControl('',[Validators.required]),
+    });
     this.getEspecialistas();
   }
 
@@ -220,31 +248,7 @@ export class RegistroComponent implements OnInit {
     (<HTMLInputElement> document.querySelector(".captcha")).innerText = "";
     (<HTMLInputElement> document.querySelector(".status-text")).style.display = "none";
   }
-  registroEspecialistaForm = new FormGroup({
-    nombre : new FormControl('',[Validators.required]),
-    apellido : new FormControl('',[Validators.required]),
-    edad : new FormControl('',[Validators.required]),
-    dni : new FormControl('',[Validators.required,Validators.minLength(4)]),
-    email : new FormControl('',[Validators.required,Validators.minLength(4),Validators.email]),
-    contrasena : new FormControl('',[Validators.required,Validators.minLength(4)]),
-    especialidad : new FormControl('',[Validators.required]),
-    fotoUno : new FormControl('',[Validators.required]),
-    captcha : new FormControl('',[Validators.required]),
-  });
-  especialista={
-    nombre:"",
-    apellido:"",
-    edad:"",
-    dni:"",
-    email:"",
-    contrasena:"",
-    especialidad:[""],
-    fotoUno:"",
-    tipo:"especialista",
-    verificado:false,
-    horaMin:"",
-    horaMax:"",
-  }
+
   get FotoUnoGetEspecialista()
   {
     return this.registroEspecialistaForm.get('fotoUno');
@@ -266,5 +270,11 @@ export class RegistroComponent implements OnInit {
   btnEnviar = true;
   toggle() {
     this.btnEnviar = !this.btnEnviar;
+  }
+  Captcha(resultado:any){
+    console.log(resultado);
+
+      this.registroEspecialistaForm.get('captcha')!.setValue(true);
+      this.registroPacienteForm.get('recaptcha')!.setValue(true);
   }
 }

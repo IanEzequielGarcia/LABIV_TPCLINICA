@@ -191,11 +191,26 @@ export class MisTurnosComponent implements OnInit {
   }
   SubirHistoria()
   {
-    let altura=  (<HTMLInputElement>document.getElementById("altura")).value
-    let peso=  (<HTMLInputElement>document.getElementById("peso")).value
-    let temperatura=  (<HTMLInputElement>document.getElementById("temperatura")).value
-    let presion=  (<HTMLInputElement>document.getElementById("presion")).value
-    this.turnoList
+    let altura=  (<HTMLInputElement>document.getElementById("altura")).value;
+    let peso=  (<HTMLInputElement>document.getElementById("peso")).value;
+    let temperatura=  (<HTMLInputElement>document.getElementById("temperatura")).value;
+    let presion=  (<HTMLInputElement>document.getElementById("presion")).value;
+    let clave1=  (<HTMLInputElement>document.getElementById("clave1")).value;
+    let valor1=  (<HTMLInputElement>document.getElementById("valor1")).value;
+    let clave2=  (<HTMLInputElement>document.getElementById("clave2")).value;
+    let valor2=  (<HTMLInputElement>document.getElementById("valor2")).value;
+    let clave3=  (<HTMLInputElement>document.getElementById("clave3")).value;
+    let valor3=  (<HTMLInputElement>document.getElementById("valor3")).value;
+    let clave4=  (<HTMLInputElement>document.getElementById("clave4")).value;
+    let valor4=  (<HTMLInputElement>document.getElementById("valor4")).value == null ? "": (<HTMLInputElement>document.getElementById("valor4")).value;
+    let clave5=  (<HTMLInputElement>document.getElementById("clave5")).value == null ? "": (<HTMLInputElement>document.getElementById("clave5")).value;
+    let valor5=  (<HTMLInputElement>document.getElementById("valor5")).value == null ? "": (<HTMLInputElement>document.getElementById("valor5")).value;
+    let clave6=  (<HTMLInputElement>document.getElementById("clave6")).value == null ? "": (<HTMLInputElement>document.getElementById("clave6")).value;
+    let valor6=  (<HTMLInputElement>document.getElementById("valor6")).checked == null ? "": (<HTMLInputElement>document.getElementById("valor6")).checked;
+    console.log(clave1);
+    console.log(valor1);
+    console.log(clave2);
+    console.log(valor2);
     let turno={
       id:"",
       especialista:"",
@@ -211,6 +226,14 @@ export class MisTurnosComponent implements OnInit {
         peso:"",
         temperatura:"",
         presion:"",
+      },
+      custom:{
+        custom1:{clave:"",valor:""},
+        custom2:{clave:"",valor:""},
+        custom3:{clave:"",valor:""},
+        custom4:{clave:"",valor:""},
+        custom5:{clave:"",valor:""},
+        custom6:{clave:"",valor:""},
       }
   }
 
@@ -249,8 +272,24 @@ export class MisTurnosComponent implements OnInit {
     turno.historia.peso=peso;
     turno.historia.temperatura=temperatura;
     turno.historia.presion=presion;
+
+    turno.custom.custom1={clave:clave1,valor:valor1};
+    turno.custom.custom2={clave:clave2,valor:valor2};
+    turno.custom.custom3={clave:clave3,valor:valor3};
+    turno.custom.custom4={clave:clave4,valor:valor4};
+    turno.custom.custom5={clave:clave5,valor:valor5};
+    turno.custom.custom6={clave:clave6,valor:valor6.toString()};
+
+    /*
+      custom1:{clave1:valor1},
+      custom2:{clave2:valor2},
+      custom3:{clave3:valor3},
+      custom4:{clave4:valor4},
+      custom5:{clave5:valor5},
+      custom6:{clave6:valor6},
+    */
     //console.log(paciente.nombre);
-    //console.log(turno);
+    console.log(turno);
     this.firestore.UpdateTurno(turno);
     Swal.fire(
       'Exito!',

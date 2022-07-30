@@ -31,6 +31,7 @@ import { OscurecerFondoDirective } from './directives/oscurecer-fondo.directive'
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { EncuestaComponent } from './componentes/encuesta/encuesta.component';
+import { CaptchaComponent } from './componentes/captcha/captcha.component';
 
 export function HttpTranslateLoader(http: HttpClient){
   return new TranslateHttpLoader(http)
@@ -49,7 +50,8 @@ export function HttpTranslateLoader(http: HttpClient){
     TurnosComponent,
     InformesComponent,
     OscurecerFondoDirective,
-    EncuestaComponent
+    EncuestaComponent,
+    CaptchaComponent
   ],
   imports: [
     CommonModule,

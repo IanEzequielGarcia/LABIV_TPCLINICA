@@ -21,6 +21,7 @@
         <div class="row">
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
                 <div #informe>
+                    <label style="font-size: 1.5em;">Turnos solicitados</label>
                     <form [formGroup]="formaFechasSolicitado" id="formFechaSolicitado">
                         <div class="row g-3">
                             <div class="col-sm-6">
@@ -33,11 +34,13 @@
                             <button style="width:150px ;"  (click)="seleccionarFechas()" [disabled]="formaFechasSolicitado.invalid"  >Filtrar </button>
                         </div>
                     </form>
+                    <label style="font-size: 1.5em;">Turnos por Especialista</label>
                     <div style="max-width:600px; max-height:600px;">
                         <div class="chart" >
                             <canvas baseChart [data]="pieChartDataEspecialista" type="pie"></canvas>
                         </div>
                     </div>
+                    <label style="font-size: 1.5em;">Turnos Finalizados</label>
                     <form [formGroup]="formaFechasFinalizado" id="formFechaFinalizado">
                         <div class="row g-3">
                             <div class="col-sm-6">
@@ -51,19 +54,21 @@
                             <button  style="width:150px ;" (click)="seleccionarFechasTurnoFinalizado()" [disabled]="formaFechasFinalizado.invalid"  > Filtrar</button>
                         </div>
                     </form>
+                    <label style="font-size: 1.5em;">Turnos Finalizados Por Especialista</label>
                     <div class="chart" style="max-width:600px; max-height:600px;">
                         <canvas baseChart [data]="pieChartDataEspecialistaFinalizado" type="pie"></canvas>
                     </div>
                     <button (click)="generatePDF()">Convertir a pdf</button>
                 </div>
 
-
                 <div #informe2>
+                    <label style="font-size: 1.5em;">Turnos Por Especialista</label>
                     <div>
                         <div class="chart" >
                             <canvas baseChart [data]="lineChartDataDia" type="pie"></canvas>
                         </div>
                     </div>
+                    <label style="font-size: 1.5em;">Turnos Por Especialidad</label>
                     <div>
                         <div class="chart" style="max-width:600px; max-height:600px;">
                             <canvas baseChart [data]="barChartDataEspecialidad" type="line"></canvas>
@@ -89,6 +94,12 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                    <div>
+                        <h4>Cantidad de médicos por especialidad</h4>
+                            <canvas baseChart id="chartMedicoEspecialidad"></canvas>   
+                        <h4>Cantidad de visitas por paciente</h4>
+                            <canvas baseChart id="chartVisitas"></canvas>    
                     </div>
                 </div>
                 <button (click)="generatePDF2()">Convertir a pdf</button>

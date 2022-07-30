@@ -56,7 +56,7 @@ export class FirebaseService {
   async AñadirColeccion(data:any,coleccion:string){
     addDoc(collection(this.db,coleccion), {data});
   }
-  public async getCollection(collectionName:string){
+  public async getCollection(collectionName:string): Promise<any[]>{
     let data:any[]=[];
     const docSnap = await getDocs(collection(this.db, collectionName));
     docSnap.forEach((doc) => {
@@ -114,37 +114,91 @@ export class FirebaseService {
     const washingtonRef = doc(this.db,"turnos",data.id);
     if(data.historia==undefined||data.historia.altura==undefined)
     {
-      await updateDoc(washingtonRef, {
-        data:{
-          "especialista":data.data.data.especialista,
-          "paciente": data.data.data.paciente,
-          "fecha": data.data.data.fecha,
-          "hora": data.data.data.hora,
-          "especialidad": data.data.data.especialidad,
-          "estado": data.data.data.estado,
-          "calificacion": data.data.data.calificacion,
-          "resena":data.data.data.resena,
-        }
-      });
-    }else{
-      await updateDoc(washingtonRef, {
-        data:{
-          "especialista":data.especialista,
-          "paciente": data.paciente,
-          "fecha": data.fecha,
-          "hora": data.hora,
-          "especialidad": data.especialidad,
-          "estado": data.estado,
-          "calificacion": data.calificacion,
-          "resena":data.resena,
-          "historia":{
-            "altura":data.historia.altura,
-            "peso":data.historia.peso,
-            "temperatura":data.historia.temperatura,
-            "presion":data.historia.presion,
+      if(data.custom==undefined||data.custom.custom1==undefined)
+      {
+        await updateDoc(washingtonRef, {
+          data:{
+            "especialista":data.data.data.especialista,
+            "paciente": data.data.data.paciente,
+            "fecha": data.data.data.fecha,
+            "hora": data.data.data.hora,
+            "especialidad": data.data.data.especialidad,
+            "estado": data.data.data.estado,
+            "calificacion": data.data.data.calificacion,
+            "resena":data.data.data.resena,
           }
-        }
-      });
+        });
+      }else{
+        await updateDoc(washingtonRef, {
+          data:{
+            "especialista":data.data.data.especialista,
+            "paciente": data.data.data.paciente,
+            "fecha": data.data.data.fecha,
+            "hora": data.data.data.hora,
+            "especialidad": data.data.data.especialidad,
+            "estado": data.data.data.estado,
+            "calificacion": data.data.data.calificacion,
+            "resena":data.data.data.resena,
+            "custom":{
+              "custom1":{clave:data.custom.custom1.clave,valor:data.custom.custom1.valor},
+              "custom2":{clave:data.custom.custom2.clave,valor:data.custom.custom2.valor},
+              "custom3":{clave:data.custom.custom3.clave,valor:data.custom.custom3.valor},
+              "custom4":{clave:data.custom.custom4.clave,valor:data.custom.custom4.valor},
+              "custom5":{clave:data.custom.custom5.clave,valor:data.custom.custom5.valor},
+              "custom6":{clave:data.custom.custom6.clave,valor:data.custom.custom6.valor},
+            }
+          }
+        });
+      }
+    }else{
+      if(data.custom==undefined||data.custom.custom1==undefined)
+      {
+        await updateDoc(washingtonRef, {
+          data:{
+            "especialista":data.especialista,
+            "paciente": data.paciente,
+            "fecha": data.fecha,
+            "hora": data.hora,
+            "especialidad": data.especialidad,
+            "estado": data.estado,
+            "calificacion": data.calificacion,
+            "resena":data.resena,
+            "historia":{
+              "altura":data.historia.altura,
+              "peso":data.historia.peso,
+              "temperatura":data.historia.temperatura,
+              "presion":data.historia.presion,
+            }
+          }
+        });
+      }else{
+        await updateDoc(washingtonRef, {
+          data:{
+            "especialista":data.especialista,
+            "paciente": data.paciente,
+            "fecha": data.fecha,
+            "hora": data.hora,
+            "especialidad": data.especialidad,
+            "estado": data.estado,
+            "calificacion": data.calificacion,
+            "resena":data.resena,
+            "historia":{
+              "altura":data.historia.altura,
+              "peso":data.historia.peso,
+              "temperatura":data.historia.temperatura,
+              "presion":data.historia.presion,
+            },
+            "custom":{
+              "custom1":{clave:data.custom.custom1.clave,valor:data.custom.custom1.valor},
+              "custom2":{clave:data.custom.custom2.clave,valor:data.custom.custom2.valor},
+              "custom3":{clave:data.custom.custom3.clave,valor:data.custom.custom3.valor},
+              "custom4":{clave:data.custom.custom4.clave,valor:data.custom.custom4.valor},
+              "custom5":{clave:data.custom.custom5.clave,valor:data.custom.custom5.valor},
+              "custom6":{clave:data.custom.custom6.clave,valor:data.custom.custom6.valor},
+            }
+          }
+        });
+      }
     }
 
   }

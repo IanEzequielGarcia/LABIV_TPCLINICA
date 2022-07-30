@@ -165,7 +165,7 @@
                                     <button (click)="CargarHoras()">Enviar</button>
                                 </form>
                                 <h2>{{"miPerfil.misEspecialidades"|translate}}</h2>
-                                <input type="text" id="especialidadInput" placeholder='{{"miPerfil.misEspecialidades.placeholder"|translate}}'><button (click)="AgregarEspecialidad()">{{"miPerfil.misEspecialidades.placeholder"|translate}}</button>
+                                <input type="text" id="especialidadInput"><button (click)="AgregarEspecialidad()">{{"miPerfil.misEspecialidades.placeholder"|translate}}</button>
                                 <ul>
                                     <ng-container *ngFor="let especialidades of especialidadesList">
                                         <li  (click)="EliminarEspecialidad(especialidades)" >
@@ -184,8 +184,8 @@
                         <div class="col d-flex align-items-start" *ngIf="tipoLogueado=='paciente';else adminElse">
                             <div class="col d-flex align-items-start">
                                 <div>
-                                    <h2>{{"miPerfil.misEspecialidades.placeHolder"|translate}}</h2>
-                                    <button setNoche style="btn btn-primary w-50" routerLink="/solicitarTurno">{{"miPerfil.misEspecialidades.placeHolder"|translate}}</button>
+                                    <h2>{{"miPerfil.misEspecialidades.placeholder"|translate}}</h2>
+                                    <button setNoche style="btn btn-primary w-50" routerLink="/solicitarTurno">{{"miPerfil.misEspecialidades.placeholder"|translate}}</button>
                                 </div>
                                 <div>
                                     <h2>{{"miPerfil.misEspecialidades"|translate}}</h2>
@@ -222,6 +222,7 @@
                                     <th >{{"miPerfil.grilla.peso"|translate}}</th>
                                     <th >{{"miPerfil.grilla.presion"|translate}}</th>
                                     <th >{{"miPerfil.grilla.temperatura"|translate}}</th>
+                                    <th >Custom</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -237,6 +238,14 @@
                                         <td>{{turno.data.data.historia.peso}}</td>
                                         <td>{{turno.data.data.historia.presion}}</td>
                                         <td>{{turno.data.data.historia.temperatura}}</td>
+                                    </div>
+                                    <div *ngIf="turno.data.data.custom!=undefined">
+                                        <td>{{turno.data.data.custom.custom1.clave}}:{{turno.data.data.custom.custom1.valor}}</td>
+                                        <td>{{turno.data.data.custom.custom2.clave}}:{{turno.data.data.custom.custom2.valor}}</td>
+                                        <td>{{turno.data.data.custom.custom3.clave}}:{{turno.data.data.custom.custom3.valor}}</td>
+                                        <td>{{turno.data.data.custom.custom4.clave}}:{{turno.data.data.custom.custom4.valor}}</td>
+                                        <td>{{turno.data.data.custom.custom5.clave}}:{{turno.data.data.custom.custom5.valor}}</td>
+                                        <td>{{turno.data.data.custom.custom6.clave}}:{{turno.data.data.custom.custom6.valor}}</td>
                                     </div>
                                 </tr>
                             </tbody>

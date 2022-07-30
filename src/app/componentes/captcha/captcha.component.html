@@ -1,0 +1,17 @@
+<div class="wrapper">
+    <div (click)="CerrarCaptcha()" style="position: absolute;">X</div>
+    <div id="captchaMostrar">
+        <div class="captcha-area" >
+            <div class="captcha-img">
+                <!--<img src="captcha-bg.png" alt="Captch Background">-->
+                <span class="captcha"></span>
+            </div>
+            <button formControlName="captcha" class="reload-btn" (click)="ReloadButton()"><i class="bi bi-arrow-clockwise"></i></button>
+        </div>
+        <form action="#" class="input-area">
+            <input type="text" placeholder="Enter captcha" maxlength="6" spellcheck="false" required>
+            <button class="check-btn" (click)="CheckButton()">Check</button>
+        </form>
+        <div class="status-text"></div>
+    </div>
+</div>
