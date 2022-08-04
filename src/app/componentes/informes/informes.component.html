@@ -17,10 +17,10 @@
 <body>
     <img [@myAnimationTrigger]="state" class="roll-in-left" src="https://www.transparentpng.com/thumb/red-cross/BG0JF1-hong-kong-red-cross-hospital-schools-picture.png" style="z-index: 9;height: 500px; width: 500px; position: absolute;">
 
-    <div  class="container-fluid" *ngIf="state=='hidden'">
+    <div  class="container-fluid">
         <div class="row">
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                <div #informe>
+                <div #informe id="informe">
                     <label style="font-size: 1.5em;">Turnos solicitados</label>
                     <form [formGroup]="formaFechasSolicitado" id="formFechaSolicitado">
                         <div class="row g-3">
@@ -40,28 +40,31 @@
                             <canvas baseChart [data]="pieChartDataEspecialista" type="pie"></canvas>
                         </div>
                     </div>
-                    <label style="font-size: 1.5em;">Turnos Finalizados</label>
-                    <form [formGroup]="formaFechasFinalizado" id="formFechaFinalizado">
-                        <div class="row g-3">
-                            <div class="col-sm-6">
-                                <input placeholder="inicio" type="date" formControlName="fechaInicio" id="fechaI">
-                            </div>
-                            
-                            <div class="col-sm-6">
-                                <input placeholder="final" type="date" formControlName="fechaFinal" id="fechaF">
-                            </div>
-                    
-                            <button  style="width:150px ;" (click)="seleccionarFechasTurnoFinalizado()" [disabled]="formaFechasFinalizado.invalid"  > Filtrar</button>
-                        </div>
-                    </form>
-                    <label style="font-size: 1.5em;">Turnos Finalizados Por Especialista</label>
-                    <div class="chart" style="max-width:600px; max-height:600px;">
-                        <canvas baseChart [data]="pieChartDataEspecialistaFinalizado" type="pie"></canvas>
-                    </div>
                     <button (click)="generatePDF()">Convertir a pdf</button>
+                    <br>
+                    <div #informeTurnosFinalizados id="informeTurnosFinalizados">
+                        <label style="font-size: 1.5em;">Turnos Finalizados</label>
+                        <form [formGroup]="formaFechasFinalizado" id="formFechaFinalizado">
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <input placeholder="inicio" type="date" formControlName="fechaInicio" id="fechaI">
+                                </div>
+                                
+                                <div class="col-sm-6">
+                                    <input placeholder="final" type="date" formControlName="fechaFinal" id="fechaF">
+                                </div>
+                                <button  style="width:150px ;" (click)="seleccionarFechasTurnoFinalizado()" [disabled]="formaFechasFinalizado.invalid"  > Filtrar</button>
+                            </div>
+                        </form>
+                        <label style="font-size: 1.5em;">Turnos Finalizados Por Especialista</label>
+                        <div class="chart" style="max-width:600px; max-height:600px;">
+                            <canvas baseChart [data]="pieChartDataEspecialistaFinalizado" type="pie"></canvas>
+                        </div>
+                        <button (click)="generatePDFFinalizados()">Convertir a pdf</button>
+                    </div>
                 </div>
 
-                <div #informe2>
+                <div #informe2 id="informe2">
                     <label style="font-size: 1.5em;">Turnos Por Especialista</label>
                     <div>
                         <div class="chart" >
@@ -95,12 +98,31 @@
                             </tbody>
                         </table>
                     </div>
+                    <h4>Cantidad de médicos por especialidad</h4>
+                    <canvas basecChart id="chartMedicoEspecialidad"></canvas>   
+                    <h4>Cantidad de visitas por paciente</h4>
+                    <canvas basecChart id="chartVisitas"></canvas>    
+                    <h4>Cantidad de informes por visitas</h4>
+                    <canvas id="chartInformeVisitas"></canvas>
                     <div>
-                        <h4>Cantidad de médicos por especialidad</h4>
-                            <canvas baseChart id="chartMedicoEspecialidad"></canvas>   
-                        <h4>Cantidad de visitas por paciente</h4>
-                            <canvas baseChart id="chartVisitas"></canvas>    
+                        <h2>Informe encuestas</h2>
+                        <br>
+                        <h4>Aprobado</h4>
+                            <canvas class="chart" id="chartAprobado"></canvas>
+                        <h4>Atencion</h4>
+                            <canvas id="chartAtencion"></canvas> 
+                        <h4>Estrellas</h4>
+                            <canvas id="chartEstrellas"></canvas> 
+                        <h4>Rapidez</h4>
+                            <canvas id="chartRapidez"></canvas> 
                     </div>
+                    <h2>Por Paciente</h2>
+                        <select (change)="ElegirPersona($event)">
+                            <option *ngFor="let paciente of listaPacientes" [value]="paciente.id">
+                                {{paciente.data.paciente.nombre}} {{paciente.data.paciente.apellido}}
+                            </option>
+                        </select>
+                        <canvas id="chartPaciente"></canvas> 
                 </div>
                 <button (click)="generatePDF2()">Convertir a pdf</button>
             </main>

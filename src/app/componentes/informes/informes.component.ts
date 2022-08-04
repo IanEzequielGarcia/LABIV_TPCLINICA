@@ -31,7 +31,9 @@ export class InformesComponent implements OnInit {
   }
 
   listaLogger:any[]=[];
+  listaEncuestas:any[]=[];
   listaTurnos:any[]=[];
+  listaPacientes:any[]=[];
   label:string[]=[];
   labelArray:string[][]=[];
   datos:number[]=[];
@@ -46,14 +48,35 @@ export class InformesComponent implements OnInit {
 
   @ViewChild('informe', {static: true}) element!: ElementRef<HTMLImageElement>;
   @ViewChild('informe2', {static: true}) element2!: ElementRef<HTMLImageElement>;
+  @ViewChild('informeTurnosFinalizados', {static: true}) element3!: ElementRef<HTMLImageElement>;
+
 
   chartMedicoEspecialidad:any=null;
   chartVisitas:any=null;
+  chartInformesVisitas:any=null;
+  chartAprobado:any=null;
+  chartAtencion:any=null;
+  chartEstrellas:any=null;
+  chartRapidez:any=null;
+  chartPaciente:any=null;
+
 
   dataLabelGraficoTurnoxEspecialidades:any;
   auxValuesGraficoTurnoxEspecialidades:any;
   dataLabelVisitasPorPaciente:any;
   auxValuesdataLabelVisitasPorPaciente:any;
+  dataLabelInformeVisitas:any;
+  auxValuesInformeVisitas:any;
+  dataLabelAprobados:any;
+  auxValuesAprobados:any;
+  dataLabelAtencion:any;
+  auxValuesAtencion:any;
+  dataLabelEstrellas:any;
+  auxValuesEstrellas:any;
+  dataLabelRapidez:any;
+  auxValuesRapidez:any;
+  dataLabelPaciente:any;
+  auxValuesPaciente:any;
   constructor(private firestore:FirebaseService,private fb:FormBuilder) {
     this.formaFechasSolicitado = this.fb.group({
       'fechaInicio':['',[Validators.required,]],
@@ -66,6 +89,8 @@ export class InformesComponent implements OnInit {
     }
   ngOnInit(): void {
     this.GetLogs();
+    this.GetEncuestas();
+    this.GetPacientes();
     this.GetTurnos();
   }
   GetLogs()
@@ -75,6 +100,26 @@ export class InformesComponent implements OnInit {
         //console.log(data.data.data.especialista);
         //console.log(logsAux);
         this.listaLogger.push(logsAux);
+      })
+    })
+  }
+  GetPacientes()
+  {
+    this.firestore.getCollection("pacientes").then(async (logs)=>{
+      logs.forEach((logsAux:any)=>{
+        //console.log(data.data.data.especialista);
+        //console.log(logsAux);
+        this.listaPacientes.push(logsAux);
+      })
+    })
+  }
+  GetEncuestas()
+  {
+    this.firestore.getCollection("encuestas").then(async (logs)=>{
+      logs.forEach((logsAux:any)=>{
+        //console.log(data.data.data.especialista);
+        //console.log(logsAux);
+        this.listaEncuestas.push(logsAux);
       })
     })
   }
@@ -270,13 +315,26 @@ export class InformesComponent implements OnInit {
               //console.log(paciente);
             }
           })
+          this.ChartMedicosEspecialidad();
+          this.ChartInformeVisitas();
+          this.ChartVisitas();
+          this.ChartAprobados();
+          this.ChartAtencion();
+          this.ChartEstrellas();
+          this.ChartRapidez();
+          this.ChartPaciente();
+
           this.ChartTurnosMedico();
           this.ChartEspecialidades();
           this.ChartDia();
           this.GetMedicosEspecialidad();
-          this.ChartMedicosEspecialidad();
-          this.ChartVisitas();
           this.GetVisitas();
+          this.GetInformeVisitas();
+          this.GetAprobados();
+          this.GetAtencion();
+          this.GetEstrellas();
+          this.GetRapidez();
+          this.GetPaciente();
         })
       })
     })
@@ -342,6 +400,23 @@ export class InformesComponent implements OnInit {
 
     //this.datosListosTurnosxEspecialidades=true
   }
+  ChartMedicosEspecialidad(){
+    if(this.chartMedicoEspecialidad!=null)
+    {
+      this.chartMedicoEspecialidad.destroy();
+    }
+    this.chartMedicoEspecialidad = new Chart('chartMedicoEspecialidad', {
+      type: 'bar',
+      data: {
+          labels: this.dataLabelGraficoTurnoxEspecialidades,
+          datasets: [{
+              label: '# medicos por especialidad',
+              data: this.auxValuesGraficoTurnoxEspecialidades,
+      borderColor: 'rgb(75, 192, 192)',
+        }]
+      }
+    });
+  }
   ChartVisitas(){
     if(this.chartVisitas!=null)
     {
@@ -359,7 +434,6 @@ export class InformesComponent implements OnInit {
       }
     });
   }
-
   GetVisitas()
   {
     let auxListaPacientes:any[]=[];
@@ -411,25 +485,396 @@ export class InformesComponent implements OnInit {
 
     //this.datosListosTurnosxEspecialidades=true
   }
-  ChartMedicosEspecialidad(){
-    if(this.chartMedicoEspecialidad!=null)
+  ChartInformeVisitas(){
+    if(this.chartInformesVisitas!=null)
     {
-      this.chartMedicoEspecialidad.destroy();
+      this.chartInformesVisitas.destroy();
     }
-    this.chartMedicoEspecialidad = new Chart('chartMedicoEspecialidad', {
-      type: 'bar',
+    this.chartInformesVisitas = new Chart('chartInformeVisitas', {
+      type: 'pie',
       data: {
-          labels: this.dataLabelGraficoTurnoxEspecialidades,
+          labels: this.dataLabelInformeVisitas,
           datasets: [{
-              label: '# medicos por especialidad',
-              data: this.auxValuesGraficoTurnoxEspecialidades,
-      borderColor: 'rgb(75, 192, 192)',
+              label: '#visitas vs informes',
+              data: this.auxValuesInformeVisitas,
+              borderColor: 'rgb(75, 192, 192)',
         }]
       }
     });
   }
+  GetInformeVisitas()
+  {
+    let auxListaPacientes:any[]=[];
+    auxListaPacientes.push({id:0,name:"visitas",cantidad:0});
+    auxListaPacientes.push({id:1,name:"encuestas",cantidad:0});
+    this.listaLogger.forEach(turno=>{
+      auxListaPacientes[0].cantidad++;
+    })
+    this.listaEncuestas.forEach(turno=>{
+      auxListaPacientes[1].cantidad++;
+    })
+
+    let auxLabelsGraficoTurnoxEspecialidades:any[]=[];
+    let auxValuesGraficoTurnoxEspecialidades:number[]=[];
+
+    auxListaPacientes.forEach(value=>{
+      auxLabelsGraficoTurnoxEspecialidades.push(value.name);
+      auxValuesGraficoTurnoxEspecialidades.push(value.cantidad);
+    })
+
+    this.dataLabelInformeVisitas = auxLabelsGraficoTurnoxEspecialidades;
+    this.auxValuesInformeVisitas = auxValuesGraficoTurnoxEspecialidades;
+    //console.log(this.dataLabelGraficoTurnoxEspecialidades);
+    //console.log(this.auxValuesGraficoTurnoxEspecialidades)
+
+    //this.data.series=auxSerie
+
+    //this.datosListosTurnosxEspecialidades=true
+  }
+  ChartAprobados(){
+    if(this.chartAprobado!=null)
+    {
+      this.chartAprobado.destroy();
+    }
+    this.chartAprobado = new Chart('chartAprobado', {
+      type: 'pie',
+      data: {
+          labels: this.dataLabelAprobados,
+          datasets: [{
+              label: '#aprobado vs desaprobado',
+              data: this.auxValuesAprobados,
+              borderColor: 'rgb(75, 192, 192)',
+        }]
+      }
+    });
+  }
+  GetAprobados()
+  {
+    let auxListaPacientes:any[]=[];
+    auxListaPacientes.push({id:0,name:"aprobado",cantidad:0});
+    auxListaPacientes.push({id:1,name:"desaprobado",cantidad:0});
+    this.listaEncuestas.forEach(turno=>{
+      //console.log(turno);
+      if(turno.data.data.aprobado=="true")
+      {
+        auxListaPacientes[0].cantidad++;
+      }else{
+        auxListaPacientes[1].cantidad++;
+      }
+    })
+
+    let auxLabelsGraficoTurnoxEspecialidades:any[]=[];
+    let auxValuesGraficoTurnoxEspecialidades:number[]=[];
+
+    auxListaPacientes.forEach(value=>{
+      auxLabelsGraficoTurnoxEspecialidades.push(value.name);
+      auxValuesGraficoTurnoxEspecialidades.push(value.cantidad);
+    })
+
+    this.dataLabelAprobados = auxLabelsGraficoTurnoxEspecialidades;
+    this.auxValuesAprobados = auxValuesGraficoTurnoxEspecialidades;
+    //console.log(this.dataLabelGraficoTurnoxEspecialidades);
+    //console.log(this.auxValuesGraficoTurnoxEspecialidades)
+
+    //this.data.series=auxSerie
+
+    //this.datosListosTurnosxEspecialidades=true
+  }
+  ChartAtencion(){
+    if(this.chartAtencion!=null)
+    {
+      this.chartAtencion.destroy();
+    }
+    this.chartAtencion = new Chart('chartAtencion', {
+      type: 'pie',
+      data: {
+          labels: this.dataLabelAtencion,
+          datasets: [{
+              label: '#puntaje atencion',
+              data: this.auxValuesAtencion,
+              borderColor: 'rgb(75, 192, 192)',
+        }]
+      }
+    });
+  }
+  GetAtencion()
+  {
+    let auxListaPacientes:any[]=[];
+    auxListaPacientes.push({id:0,name:"Mala",cantidad:0});
+    auxListaPacientes.push({id:1,name:"Media",cantidad:0});
+    auxListaPacientes.push({id:2,name:"Excelente",cantidad:0});
+
+    this.listaEncuestas.forEach(turno=>{
+      //console.log(turno);
+      if(turno.data.data.atencion==0)
+      {
+        auxListaPacientes[0].cantidad++;
+      }else if(turno.data.data.atencion==1){
+        auxListaPacientes[1].cantidad++;
+      }else{
+        auxListaPacientes[2].cantidad++;
+      }
+    })
+
+    let auxLabelsGraficoTurnoxEspecialidades:any[]=[];
+    let auxValuesGraficoTurnoxEspecialidades:number[]=[];
+
+    auxListaPacientes.forEach(value=>{
+      auxLabelsGraficoTurnoxEspecialidades.push(value.name);
+      auxValuesGraficoTurnoxEspecialidades.push(value.cantidad);
+    })
+
+    this.dataLabelAtencion = auxLabelsGraficoTurnoxEspecialidades;
+    this.auxValuesAtencion = auxValuesGraficoTurnoxEspecialidades;
+    //console.log(this.dataLabelGraficoTurnoxEspecialidades);
+    //console.log(this.auxValuesGraficoTurnoxEspecialidades)
+
+    //this.data.series=auxSerie
+
+    //this.datosListosTurnosxEspecialidades=true
+  }
+  GetEstrellas()
+  {
+    let auxListaPacientes:any[]=[];
+    auxListaPacientes.push({id:0,name:"1 Estrellas",cantidad:0});
+    auxListaPacientes.push({id:1,name:"2 Estrellas",cantidad:0});
+    auxListaPacientes.push({id:2,name:"3 Estrellas",cantidad:0});
+    auxListaPacientes.push({id:3,name:"4 Estrellas",cantidad:0});
+    auxListaPacientes.push({id:4,name:"5 Estrellas",cantidad:0});
+
+    this.listaEncuestas.forEach(turno=>{
+      //console.log(turno);
+      if(turno.data.data.estrellas==1)
+      {
+        auxListaPacientes[0].cantidad++;
+      }else if(turno.data.data.estrellas==2){
+        auxListaPacientes[1].cantidad++;
+      }else if(turno.data.data.estrellas==3){
+        auxListaPacientes[2].cantidad++;
+      }else if(turno.data.data.estrellas==4){
+        auxListaPacientes[3].cantidad++;
+      }else{
+        auxListaPacientes[4].cantidad++;
+      }
+    })
+
+    let auxLabelsGraficoTurnoxEspecialidades:any[]=[];
+    let auxValuesGraficoTurnoxEspecialidades:number[]=[];
+
+    auxListaPacientes.forEach(value=>{
+      auxLabelsGraficoTurnoxEspecialidades.push(value.name);
+      auxValuesGraficoTurnoxEspecialidades.push(value.cantidad);
+    })
+
+    this.dataLabelEstrellas = auxLabelsGraficoTurnoxEspecialidades;
+    this.auxValuesEstrellas = auxValuesGraficoTurnoxEspecialidades;
+    //console.log(this.dataLabelGraficoTurnoxEspecialidades);
+    //console.log(this.auxValuesGraficoTurnoxEspecialidades)
+
+    //this.data.series=auxSerie
+
+    //this.datosListosTurnosxEspecialidades=true
+  }
+  ChartEstrellas(){
+    if(this.chartEstrellas!=null)
+    {
+      this.chartEstrellas.destroy();
+    }
+    this.chartEstrellas = new Chart('chartEstrellas', {
+      type: 'pie',
+      data: {
+          labels: this.dataLabelEstrellas,
+          datasets: [{
+              label: '#estrellas atencion',
+              data: this.auxValuesEstrellas,
+              borderColor: 'rgb(75, 192, 192)',
+        }]
+      }
+    });
+  }
+  GetRapidez()
+  {
+    let auxListaPacientes:any[]=[];
+    auxListaPacientes.push({id:0,name:"1",cantidad:0});
+    auxListaPacientes.push({id:1,name:"2",cantidad:0});
+    auxListaPacientes.push({id:2,name:"3",cantidad:0});
+    auxListaPacientes.push({id:2,name:"4",cantidad:0});
+    auxListaPacientes.push({id:2,name:"5",cantidad:0});
+    auxListaPacientes.push({id:2,name:"6",cantidad:0});
+    auxListaPacientes.push({id:2,name:"7",cantidad:0});
+    auxListaPacientes.push({id:2,name:"8",cantidad:0});
+    auxListaPacientes.push({id:2,name:"9",cantidad:0});
+    auxListaPacientes.push({id:2,name:"10",cantidad:0});
 
 
+    this.listaEncuestas.forEach(turno=>{
+      //console.log(turno);
+      switch(turno.data.data.rapidez)
+      {
+        case "1":
+          auxListaPacientes[0].cantidad++;
+          break;
+        case "2":
+          auxListaPacientes[1].cantidad++;
+          break;
+        case "3":
+          auxListaPacientes[2].cantidad++;
+          break;
+        case "4":
+          auxListaPacientes[3].cantidad++;
+          break;
+        case "5":
+          auxListaPacientes[4].cantidad++;
+          break;
+        case "6":
+          auxListaPacientes[5].cantidad++;
+          break;
+        case "7":
+          auxListaPacientes[6].cantidad++;
+          break;
+        case "8":
+          auxListaPacientes[7].cantidad++;
+          break;
+        case "9":
+          auxListaPacientes[8].cantidad++;
+          break;
+        default:
+          auxListaPacientes[9].cantidad++;
+          break;
+      }
+    })
+
+    let auxLabelsGraficoTurnoxEspecialidades:any[]=[];
+    let auxValuesGraficoTurnoxEspecialidades:number[]=[];
+
+    auxListaPacientes.forEach(value=>{
+      auxLabelsGraficoTurnoxEspecialidades.push(value.name);
+      auxValuesGraficoTurnoxEspecialidades.push(value.cantidad);
+    })
+
+    this.dataLabelRapidez = auxLabelsGraficoTurnoxEspecialidades;
+    this.auxValuesRapidez = auxValuesGraficoTurnoxEspecialidades;
+    //console.log(this.dataLabelGraficoTurnoxEspecialidades);
+    //console.log(this.auxValuesGraficoTurnoxEspecialidades)
+
+    //this.data.series=auxSerie
+
+    //this.datosListosTurnosxEspecialidades=true
+  }
+  ChartRapidez(){
+    if(this.chartRapidez!=null)
+    {
+      this.chartRapidez.destroy();
+    }
+    this.chartRapidez = new Chart('chartRapidez', {
+      type: 'pie',
+      data: {
+          labels: this.dataLabelRapidez,
+          datasets: [{
+              label: '#puntaje atencion',
+              data: this.auxValuesRapidez,
+              borderColor: 'rgb(75, 192, 192)',
+        }]
+      }
+    });
+  }
+  GetPaciente(id?:string)
+  {
+    let auxListaPacientes:any[]=[];
+    auxListaPacientes.push({id:0,name:"pendientes",cantidad:0});
+    auxListaPacientes.push({id:1,name:"cancelado",cantidad:0});
+    auxListaPacientes.push({id:2,name:"finalizado",cantidad:0});
+
+    this.listaTurnos.forEach(turno=>{
+      //console.log(turno);
+      if(id!=undefined)
+      {
+        if(turno.data.data.paciente==id)
+        {
+          switch(turno.data.data.estado)
+          {
+            case "":
+              auxListaPacientes[0].cantidad++;
+              break;
+            case "cancelado":
+              auxListaPacientes[1].cantidad++;
+              break;
+            case "finalizado":
+              auxListaPacientes[2].cantidad++;
+              break;
+          }
+        }
+      }else{
+        switch(turno.data.data.estado)
+        {
+          case "":
+            auxListaPacientes[0].cantidad++;
+            break;
+          case "cancelado":
+            auxListaPacientes[1].cantidad++;
+            break;
+          case "finalizado":
+            auxListaPacientes[2].cantidad++;
+            break;
+        }
+      }
+    })
+
+  this.dataLabelPaciente=[];
+  this.auxValuesPaciente=[];
+
+
+    console.log(auxListaPacientes[0].cantidad);
+    console.log(auxListaPacientes[1].cantidad);
+    console.log(auxListaPacientes[2].cantidad);
+
+    let auxLabelsGraficoTurnoxEspecialidades:any[]=[];
+    let auxValuesGraficoTurnoxEspecialidades:number[]=[];
+
+    auxListaPacientes.forEach(value=>{
+      auxLabelsGraficoTurnoxEspecialidades.push(value.name);
+      auxValuesGraficoTurnoxEspecialidades.push(value.cantidad);
+    })
+
+    this.dataLabelPaciente = auxLabelsGraficoTurnoxEspecialidades;
+    this.auxValuesPaciente = auxValuesGraficoTurnoxEspecialidades;
+    this.ChartPaciente();
+  }
+  ChartPaciente(){
+    if(this.chartPaciente!=null)
+    {
+      this.chartPaciente.destroy();
+      this.chartPaciente = new Chart('chartPaciente', {
+        type: 'pie',
+        data: {
+            labels: this.dataLabelPaciente,
+            datasets: [{
+                label: '#puntaje atencion',
+                data: this.auxValuesPaciente,
+                borderColor: 'rgb(75, 192, 192)',
+          }]
+        }
+      });
+      (<Chart>this.chartPaciente).draw();
+    }else{
+      this.chartPaciente = new Chart('chartPaciente', {
+        type: 'pie',
+        data: {
+            labels: this.dataLabelPaciente,
+            datasets: [{
+                label: '#puntaje atencion',
+                data: this.auxValuesPaciente,
+                borderColor: 'rgb(75, 192, 192)',
+          }]
+        }
+      });
+    }
+  }
+  ElegirPersona(evento:any)
+  {
+    this.GetPaciente(evento.target.value);
+    console.log(evento.target.value);
+  }
   @ViewChild(BaseChartDirective) chartEspecialista: BaseChartDirective | undefined;
   public pieChartDataEspecialista: ChartData<'pie', number[], string | string[]> = {
     labels: [],
@@ -656,7 +1101,7 @@ export class InformesComponent implements OnInit {
     document.getElementById("formFechaFinalizado")!.style.display="block";
   }
   generatePDF2() { 
-    /*html2canvas(this.element2.nativeElement).then((canvas)=>{
+    html2canvas(this.element2.nativeElement).then((canvas)=>{
       const imgData = canvas.toDataURL('image/jpeg');
       const pdf = new jsPDF({
         orientation: 'portrait',
@@ -670,12 +1115,29 @@ export class InformesComponent implements OnInit {
 
       pdf.addImage(imgData, 'PNG', 0, 0, pdfw, pdfh);
       pdf.output('dataurlnewwindow');
-    })*/
-    let pdf = new jsPDF('p','pt','a4');
+    })
+    /*let pdf = new jsPDF('p','pt','a4');
     pdf.html(this.element2.nativeElement,{
       callback:(pdf)=>{
         pdf.save(`grafico3.pdf`);
       }
+    })*/
+  }
+  generatePDFFinalizados(){
+    html2canvas(this.element3.nativeElement).then((canvas)=>{
+      const imgData = canvas.toDataURL('image/jpeg');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+      });
+      const imageProps = pdf.getImageProperties(imgData);
+      console.log(imageProps.height);
+      const pdfw = pdf.internal.pageSize.getWidth();
+      const pdfh = (imageProps.height* pdfw)/ imageProps.width;
+      console.log(pdfw);
+      console.log(pdfh);
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfw, pdfh);
+      pdf.output('dataurlnewwindow');
     })
-  } 
+  }
 }

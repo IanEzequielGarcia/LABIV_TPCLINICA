@@ -129,7 +129,7 @@
                 </div>
                 <h2 class="pb-2 border-bottom">{{"miPerfil.titulo"|translate}}</h2>
                 
-                <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
+                <div class="row g-4 py-5 row-cols-1 row-cols-lg-1">
                     <div class="col d-flex align-items-start">
                         <div class="icon-square bg-light text-dark flex-shrink-0 me-3">
                             <svg class="bi" width="1em" height="1em">
@@ -183,13 +183,17 @@
                     <ng-template #elseBlock>
                         <div class="col d-flex align-items-start" *ngIf="tipoLogueado=='paciente';else adminElse">
                             <div class="col d-flex align-items-start">
-                                <div>
-                                    <h2>{{"miPerfil.misEspecialidades.placeholder"|translate}}</h2>
-                                    <button setNoche style="btn btn-primary w-50" routerLink="/solicitarTurno">{{"miPerfil.misEspecialidades.placeholder"|translate}}</button>
+                                <div style="padding-right: 1em;">
+                                    <h2>{{"miPerfil.turnos"|translate}}</h2>
+                                    <button setNoche style="btn btn-primary w-50" routerLink="/solicitarTurno">{{"miPerfil.turnos"|translate}}</button>
                                 </div>
-                                <div>
-                                    <h2>{{"miPerfil.misEspecialidades"|translate}}</h2>
-                                    <button setNoche style="btn btn-primary w-50" routerLink="/usuario/misTurnos">{{"miPerfil.misEspecialidades"|translate}}</button>
+                                <div style="padding-right: 1em;">
+                                    <h2>{{"miPerfil.misTurnos"|translate}}</h2>
+                                    <button setNoche style="btn btn-primary w-50" routerLink="/usuario/misTurnos">{{"miPerfil.misTurnos"|translate}}</button>
+                                </div>
+                                <div style="padding-right: 1em;">
+                                    <h2>{{"miPerfil.encuesta"|translate}}</h2>
+                                    <button setNoche style="btn btn-primary w-50" routerLink="/encuesta">{{"miPerfil.encuesta"|translate}}</button>
                                 </div>
                             </div>
                         </div>

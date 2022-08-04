@@ -4,6 +4,7 @@
         "sobreMi":"Sobre mim",
         "misHorarios":"Meus Horários",
         "misHorarios.desde":"Desde",
+        "turnos":"novo turno",
         "misHorarios.hasta":"Até",
         "misTurnos":"Meus Turnos",
         "misEspecialidades":"Minhas Especialidades",
@@ -11,6 +12,7 @@
         "historiaClinica":"História Clínica",
         "eliminar":"eliminar",
         "pdf":"para PDF",
+        "encuesta":"inquérito",
         "grilla":{
             "especialidad":"especialidade",
             "especialista":"especialista",

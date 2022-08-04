@@ -4,6 +4,7 @@
         "sobreMi":"About Me",
         "misHorarios":"My schedules",
         "misHorarios.desde":"From",
+        "turnos":"New Turn",
         "misHorarios.hasta":"Until",
         "misTurnos":"My shifts",
         "misEspecialidades":"My specialties",
@@ -11,6 +12,7 @@
         "historiaClinica":"medical history",
         "eliminar":"delete",
         "pdf":"to PDF",
+        "encuesta":"survey",
         "grilla":{
             "especialidad":"speciality",
             "especialista":"specialist",
